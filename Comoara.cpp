@@ -3,15 +3,16 @@
 
 unsigned Comoara::id = 0;
 
-Comoara::Comoara(int dim) {
+Comoara::Comoara(const int dimLin, const int dimCol) {
 	//creare ID
 	id++;					
 	this->ID = "C" + to_string(id);
 	
 	//generare pozitie comoara
 	default_random_engine generator;
-	uniform_int_distribution<int> distributie(1, dim - 1);
+	uniform_int_distribution<int> distributie(1, dimLin - 1);
 	int l = distributie(generator);
+	uniform_int_distribution<int> distributie(1, dimCol - 1);
 	int c = distributie(generator);
 	this->poz.setPozitie(l, c);
 }

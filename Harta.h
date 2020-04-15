@@ -6,15 +6,14 @@
 using namespace std;
 
 class Harta {											//clasa pentru gestionarea hartii
-	const int nrLin, nrCol;
+	int nrLin, nrCol;
 	int nrCasuteExplorate;
 	char** M;
-	vector<Cautator*> cautatori;
-	vector<Comoara*> comori;
 
 public:
-	Harta(const int);									//constructor
+	Harta(const int, const int);						//constructor
 	~Harta();											//destructor
+	int getNrCasuteNeexplorate();						//obtinere nr de casute neexplorate
 
 	friend ostream& operator <<(ostream&, Harta&);		//operator << supraincarcat
 

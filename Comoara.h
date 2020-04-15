@@ -11,7 +11,7 @@ class Comoara {										//clasa pt comorile de pe harta
 	string ID = "";
 
 public:
-	Comoara(const int);								//constructor
+	Comoara(const int, const int);					//constructor
 	~Comoara();										//destructor
 	void gasitComoara(const string, Harta&);		//gasire comoara
 };
