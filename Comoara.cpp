@@ -1,7 +1,26 @@
 #include "Comoara.h"
+#include <random>
 
-Comoara::Comoara(const int l, const int c) : poz(l, c) {}
+unsigned Comoara::id = 0;
+
+Comoara::Comoara(int dim) {
+	//creare ID
+	id++;					
+	this->ID = "C" + to_string(id);
+	
+	//generare pozitie comoara
+	default_random_engine generator;
+	uniform_int_distribution<int> distributie(1, dim - 1);
+	int l = distributie(generator);
+	int c = distributie(generator);
+	this->poz.setPozitie(l, c);
+}
 
 Comoara::~Comoara() {
 	delete this;
+}
+
+void Comoara::gasitComoara(string idCaut) {			
+	//in cazul in care un cautator a gasit o comoara afisez mesajul corepsunzator
+	cout << "Comoara " << stoul(this->ID.substr(2)) << "a fost gasita de cautarorul " << stoul(idCaut.substr(4));
 }

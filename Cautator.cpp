@@ -1,7 +1,16 @@
 #include "Cautator.h"
 
-Cautator::Cautator(const int l, const int c) : poz(l, c) {}
+unsigned Cautator::id = 0;
+
+Cautator::Cautator() {
+	id++;
+	this->ID = to_string(id) + "-";
+}
 
 Cautator::~Cautator() {
 	delete this;
+}
+
+string Cautator::getID() {
+	return this->ID;
 }
