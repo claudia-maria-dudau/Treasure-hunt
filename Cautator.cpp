@@ -26,3 +26,7 @@ Pozitie Cautator::getPoz() const{
 void Cautator::setStadiu(const string s) {
 	this->stadiu = s;
 }
+
+string Cautator::getStadiu() const {
+	return this->stadiu;
+}

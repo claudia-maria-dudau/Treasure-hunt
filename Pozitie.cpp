@@ -15,6 +15,6 @@ int Pozitie::getColoana() const {
 	return this->col;
 }
 
-bool Pozitie::operator ==(const Pozitie& p) {
-	return (this->lin = p.lin && this->col == p.col);
+bool operator ==(const Pozitie& p1, const Pozitie& p2) {
+	return (p1.getLinie() == p2.getLinie() && p1.getColoana() == p2.getColoana());
 }

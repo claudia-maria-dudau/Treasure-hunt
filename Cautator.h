@@ -18,6 +18,7 @@ public:
 	string getID() const;					//obtinere ID
 	Pozitie getPoz() const;					//obtinere pozitie
 	void setStadiu(const string);			//setarea stdiu
+	string getStadiu() const;				//obtinere stadiu
 	virtual void mutare() = 0;				//metoda prin care fiecare cautator se muta cu o pozitie
 };
 

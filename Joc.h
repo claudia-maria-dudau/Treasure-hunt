@@ -9,6 +9,8 @@
 #include <exception>
 
 class exceptieJoc : public exception {	//clasa pt exceptie ce apare atunci cand nu se mai poate genera o runda
+public:
+	const char* what() const noexcept { return "Nu se mai poate genera o runda deoarece jocul s-a terminat\n"; }
 };
 
 
@@ -16,6 +18,7 @@ class Joc {								//clasa pentru gestionarea jocului
 	Harta *h;
 	static int idRunda;
 	vector<Cautator*> cautatori;
+	vector<Cautator*> Clasament;		//vector auxiliar pentru clasament
 	vector<Comoara*> comori;
 
 public:
@@ -23,5 +26,8 @@ public:
 	~Joc();								//destructor
 	void runda();						//simulare runda
 	void afisare();						//afisare harta dupa runda
+	void clasament();					//afisare clasament final
+	void adaugClasament(Cautator*);		//adaugare in vectorul Clasament
+	bool terminat();					//verificare daca s-a terminat jocul sau a fost oprit
 };
 

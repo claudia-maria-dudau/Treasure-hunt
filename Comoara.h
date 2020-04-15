@@ -3,6 +3,7 @@
 #include "Harta.h"
 #include <string>
 #include <iostream>
+
 using namespace std;
 
 class Comoara {										//clasa pt comorile de pe harta
