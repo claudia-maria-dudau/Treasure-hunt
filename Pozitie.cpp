@@ -7,6 +7,14 @@ void Pozitie::setPozitie(int l, int c) {
 	this->col = c;
 }
 
+int Pozitie::getLinie() const {
+	return this->lin;
+}
+
+int Pozitie::getColoana() const {
+	return this->col;
+}
+
 bool Pozitie::operator ==(const Pozitie& p) {
 	return (this->lin = p.lin && this->col == p.col);
 }

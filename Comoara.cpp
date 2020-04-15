@@ -20,7 +20,8 @@ Comoara::~Comoara() {
 	delete this;
 }
 
-void Comoara::gasitComoara(string idCaut) {			
+void Comoara::gasitComoara(string idCaut, Harta& h) {			
 	//in cazul in care un cautator a gasit o comoara afisez mesajul corepsunzator
-	cout << "Comoara " << stoul(this->ID.substr(2)) << "a fost gasita de cautarorul " << stoul(idCaut.substr(4));
+	cout << "Comoara " << stoul(this->ID.substr(2)) << "a fost gasita de cautarorul " << stoul(idCaut.substr(4)) <<endl;
+	h.M[this->poz.getLinie()][this->poz.getColoana()] = 'X';
 }

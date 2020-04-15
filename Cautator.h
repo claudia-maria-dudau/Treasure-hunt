@@ -17,7 +17,5 @@ public:
 	virtual ~Cautator();					//destructor virtual
 	string getID();
 	virtual void mutare() = 0;				//metoda prin care fiecare cautator se muta cu o pozitie
-
-	friend class Harta;
 };
 
