@@ -1,6 +1,4 @@
 #pragma once
-#include "Cautator.h"
-#include "Comoara.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -17,7 +15,10 @@ public:
 
 	friend ostream& operator <<(ostream&, Harta&);		//operator << supraincarcat
 
-	friend class Cautator;
+	friend class CautatorTip1;
+	friend class CautatorTip2;
+	friend class CautatorTip3;
+	friend class CautatorTip4;
 	friend class Comoara;
 };
 
