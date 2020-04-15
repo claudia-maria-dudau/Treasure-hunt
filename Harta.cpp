@@ -21,6 +21,14 @@ int Harta::getNrCasuteNeexplorate() const {
 	return this->nrLin * this->nrCol - this->nrCasuteExplorate;
 }
 
+void Harta::cresteNrCasuteExplorate() {
+	this->nrCasuteExplorate++;
+}
+
+void Harta::marchezVizitat(const int l, const int c) {
+	this->M[l][c] = '|';
+}
+
 ostream& operator <<(ostream& out, Harta& h) {
 	for (int i = 0; i < h.nrLin; i++) {
 		for (int j = 0; j < h.nrCol; j++)

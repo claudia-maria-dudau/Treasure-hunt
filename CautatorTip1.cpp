@@ -12,4 +12,5 @@ CautatorTip1::CautatorTip1(Harta& h) {
 
 void CautatorTip1::mutare() {
 	//???MISTER???
+	//marchez pozitia pe care ajung
 }

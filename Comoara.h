@@ -11,7 +11,8 @@ class Comoara {										//clasa pt comorile de pe harta
 	string ID = "";
 
 public:
-	Comoara(const int, const int);					//constructor
+	Comoara(Harta& );								//constructor
 	~Comoara();										//destructor
 	void gasitComoara(const string, Harta&);		//gasire comoara
+	Pozitie getPoz() const;							//obtinere pozitie
 };

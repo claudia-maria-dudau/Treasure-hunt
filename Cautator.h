@@ -16,6 +16,8 @@ public:
 	Cautator();								//constructor
 	virtual ~Cautator();					//destructor virtual
 	string getID() const;					//obtinere ID
+	Pozitie getPoz() const;					//obtinere pozitie
+	void setStadiu(const string);			//setarea stdiu
 	virtual void mutare() = 0;				//metoda prin care fiecare cautator se muta cu o pozitie
 };
 

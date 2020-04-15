@@ -18,3 +18,11 @@ Cautator::~Cautator() {
 string Cautator::getID() const {
 	return this->ID;
 }
+
+Pozitie Cautator::getPoz() const{
+	return *poz;
+}
+
+void Cautator::setStadiu(const string s) {
+	this->stadiu = s;
+}
