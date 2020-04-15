@@ -6,7 +6,7 @@
 using namespace std;
 
 class Comoara {										//clasa pt comorile de pe harta
-	Pozitie poz;
+	const Pozitie* poz;
 	static unsigned id;
 	string ID = "";
 

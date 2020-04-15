@@ -13,7 +13,7 @@ class Harta {											//clasa pentru gestionarea hartii
 public:
 	Harta(const int, const int);						//constructor
 	~Harta();											//destructor
-	int getNrCasuteNeexplorate();						//obtinere nr de casute neexplorate
+	int getNrCasuteNeexplorate() const;					//obtinere nr de casute neexplorate
 
 	friend ostream& operator <<(ostream&, Harta&);		//operator << supraincarcat
 

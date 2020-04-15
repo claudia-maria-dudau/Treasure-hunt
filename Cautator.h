@@ -7,15 +7,15 @@ using namespace std;
 
 class Cautator {							//clasa abstracta pe care o mostenesc celelate clase de cautatori
 protected:
-	Pozitie poz;
+	Pozitie* poz;
 	int arieVizibilitate;
 	static unsigned id;
-	string ID = "";
+	string ID = "", stadiu = "";
 
 public:
 	Cautator();								//constructor
 	virtual ~Cautator();					//destructor virtual
-	string getID();
+	string getID() const;					//obtinere ID
 	virtual void mutare() = 0;				//metoda prin care fiecare cautator se muta cu o pozitie
 };
 

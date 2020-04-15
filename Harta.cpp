@@ -17,7 +17,7 @@ Harta::~Harta() {
 	this->nrLin = this->nrCol = this->nrCasuteExplorate = 0;
 }
 
-int Harta::getNrCasuteNeexplorate() {
+int Harta::getNrCasuteNeexplorate() const {
 	return this->nrLin * this->nrCol - this->nrCasuteExplorate;
 }
 
