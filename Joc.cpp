@@ -4,17 +4,18 @@ int Joc::idRunda = 0;
 
 Joc::Joc(const int dimLin, const int dimCol) {
 	//creare harta
-	h = new Harta(dimLin, dimCol);
+	this->h = new Harta(dimLin, dimCol);
 
 	//creare cautatori
-	cautatori.push_back(new CautatorTip1((*h)));
-	cautatori.push_back(new CautatorTip2((*h)));
-	cautatori.push_back(new CautatorTip3((*h)));
-	cautatori.push_back(new CautatorTip4((*h)));
+	this->cautatori.push_back(new CautatorTip1((*h)));
+	this->cautatori.push_back(new CautatorTip2((*h)));
+	this->cautatori.push_back(new CautatorTip3((*h)));
+	this->cautatori.push_back(new CautatorTip4((*h)));
 
 	//creare comori
-	for (int i = 1; i <= 3; i++)
-		this->comori.push_back(new Comoara((*h)));
+	this->comori.push_back(new ComoaraTip1((*h)));
+	this->comori.push_back(new ComoaraTip2((*h)));
+	this->comori.push_back(new ComoaraTip3((*h)));
 }
 
 Joc::~Joc() {
@@ -39,23 +40,37 @@ void Joc::runda() {
 		for (int i = 0; i < this->cautatori.size(); i++) {
 			//retin pozitia curenta (care v-a deveni anterioara odata ce cautatorul se muta)
 			Pozitie p = (*cautatori[i]).getPoz();
-			h->marchezVizitat(p.getLinie(), p.getColoana());
+
+			//verific daca pe pozitia curenta se af;a o harta innacesibila cautatorului
+			int ok = 0;
+			for (int j = 0; j < comori.size(); j++) {
+				if (comori[j]->getPoz() == p) {
+					ok = 1;
+					break;
+				}
+			}
+
+			//daca da, las marcajul comorii pe harta
+			if(ok)
+				h->marchez(p.getLinie(), p.getColoana(), 'X');
+			
+			//daca nu, marchez casuta ca fiind vizitata
+			else
+				h->marchez(p.getLinie(), p.getColoana(), '|');
 
 			//mut cautatorul
 			cautatori[i]->mutare();
 			if(!(cautatori[i]->getPoz() == p))
 				h->cresteNrCasuteExplorate();
 
-			//retin ID-ul cautatorului si pozitia curenta
+			//verific unde a ajuns pe harta
 			string idCaut = cautatori[i]->getID();
 			Pozitie p1 = cautatori[i]->getPoz();
-
-			//verific unde a ajuns pe harta
-			int ok = 0;
+			ok = 0;
 
 			//daca a ramas pe aceeasi pozitie inseamna ca s-a blocat si deci nu mai poate participa la joc
 			if (p1 == p) {
-				cout << "Cautatorul " + idCaut.substr(0, 1) + " s-a blocat :( " << "Better luck next time pal" << endl;
+				cout << "Cautatorul " + idCaut.substr(0, 1) + " s-a blocat :( Better luck next time pal" << endl;
 				cautatori[i]->setStadiu("Blocat in runda " + to_string(idRunda));
 				ok = 1;
 			}
@@ -63,11 +78,19 @@ void Joc::runda() {
 			//daca a gasit comoara
 			for(int j = 0; j < this->comori.size(); j++)
 				if (p1 == comori[j]->getPoz()) {
-					comori[j]->gasitComoara(idCaut, *h);
-					comori.erase(comori.begin() + j);
-					cautatori[i]->setStadiu("Gasit comoara in runda " + to_string(idRunda));
-					ok = 1;
-					break;
+					set <string> comp = comori[i]->getCompatibil();
+
+					//verific daca cautatorul este compatibil cu comoara gasita
+					//in caz afirmatic marchez comoara ca gasita si scot cautatorul de pe harta
+					if (comp.find(idCaut.substr(2, 4)) != comp.end()) {
+						comori[j]->gasitComoara(idCaut);
+						comori.erase(comori.begin() + j);
+						cautatori[i]->setStadiu("Gasit comoara in runda " + to_string(idRunda));
+						ok = 1;
+						break;
+					}
+					else
+						cout << "Cautatorul " + idCaut.substr(0, 1) + " a gasit o comoara cu care nu este compatibil. Uneori pierzi alteori nu castigi" << endl;
 				}
 
 			//daca cautatorul se gaseste in unul dintre cazurile anterioare 
@@ -111,10 +134,14 @@ void Joc::clasament() {
 	//daca mai exista comori pe tabla afisez pozitia lor
 	if (this->comori.size()) {
 		cout << endl;
-		cout << "Comorile ramase se gaseau la: ";
+		cout << "Comorile ramase se gaseau la:" << endl;
 		for (int i = 0; i < this->comori.size(); i++) {
 			Pozitie p = comori[i]->getPoz();
-			cout << "(" << p.getLinie() << ", " << p.getColoana() << ")" << " ";
+			cout << "(" << p.getLinie() << ", " << p.getColoana() << ")" << " - compatibila cu cautatorii: ";
+			set<string> comp = comori[i]->getCompatibil();
+			for (auto j : comp)
+				cout << j << " ";
+			cout << endl;
 		}
 	}
 	cout << endl;

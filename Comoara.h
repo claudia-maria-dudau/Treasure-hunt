@@ -3,17 +3,21 @@
 #include "Harta.h"
 #include <string>
 #include <iostream>
+#include <set>
 
 using namespace std;
 
-class Comoara {										//clasa pt comorile de pe harta
+class Comoara {											//clasa abstracta de baza pentru comorile de pe harta
+protected:
 	const Pozitie* poz;
 	static unsigned id;
 	string ID = "";
+	set<string> compatibil;
 
 public:
-	Comoara(Harta& );								//constructor
-	~Comoara();										//destructor
-	void gasitComoara(const string, Harta&);		//gasire comoara
-	Pozitie getPoz() const;							//obtinere pozitie
+	Comoara(Harta& );									//constructor
+	~Comoara();											//destructor
+	virtual void gasitComoara(const string) = 0;		//gasire comoara
+	Pozitie getPoz() const;								//obtinere pozitie
+	set<string> getCompatibil() const;					//obtinere lista de cautatoti compatibili cu comoara
 };

@@ -6,6 +6,9 @@
 #include "CautatorTip3.h"
 #include "CautatorTip4.h"
 #include "Comoara.h"
+#include "ComoaraTip1.h"
+#include "ComoaraTip2.h"
+#include "ComoaraTip3.h"
 #include <exception>
 
 class exceptieJoc : public exception {	//clasa pt exceptie ce apare atunci cand nu se mai poate genera o runda

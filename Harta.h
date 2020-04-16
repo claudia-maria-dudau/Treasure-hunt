@@ -13,7 +13,7 @@ public:
 	~Harta();											//destructor
 	int getNrCasuteNeexplorate() const;					//obtinere nr de casute neexplorate
 	void cresteNrCasuteExplorate();						//cresc nr de casute explorate cu 1
-	void marchezVizitat(const int, const int);			//marchez pozitia data ca vizitata
+	void marchez(const int, const int, const char);		//marchez pozitia data cu caracterul primit
 	friend ostream& operator <<(ostream&, Harta&);		//operator << supraincarcat
 
 	friend class CautatorTip1;
