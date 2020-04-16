@@ -2,8 +2,10 @@
 #include "Cautator.h"
 
 class CautatorTip1 : public Cautator {		//clasa pentru cautatorii de tip 1
+	Pozitie* pozAnt;
+
 public:
 	CautatorTip1(Harta&);					//constructor
-	void mutare();							//metoda prin care se misca pe tabla
+	void mutare(Harta&);					//metoda prin care se misca pe tabla
 };
 

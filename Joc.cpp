@@ -7,15 +7,20 @@ Joc::Joc(const int dimLin, const int dimCol) {
 	this->h = new Harta(dimLin, dimCol);
 
 	//creare cautatori
-	this->cautatori.push_back(new CautatorTip1((*h)));
-	this->cautatori.push_back(new CautatorTip2((*h)));
-	this->cautatori.push_back(new CautatorTip3((*h)));
-	this->cautatori.push_back(new CautatorTip4((*h)));
+	this->cautatori.push_back(new CautatorTip1(*h));
+	this->cautatori.push_back(new CautatorTip2(*h));
+	this->cautatori.push_back(new CautatorTip3(*h));
+	this->cautatori.push_back(new CautatorTip4(*h));
 
 	//creare comori
-	this->comori.push_back(new ComoaraTip1((*h)));
-	this->comori.push_back(new ComoaraTip2((*h)));
-	this->comori.push_back(new ComoaraTip3((*h)));
+	this->comori.push_back(new ComoaraTip1(*h));
+	this->comori.push_back(new ComoaraTip2(*h));
+	this->comori.push_back(new ComoaraTip3(*h));
+	
+	//demarchez comorile de pe harta
+	this->h->marchez(comori[0]->getPoz().getLinie(), comori[0]->getPoz().getColoana(), '-');
+	this->h->marchez(comori[1]->getPoz().getLinie(), comori[1]->getPoz().getColoana(), '-');
+	this->h->marchez(comori[2]->getPoz().getLinie(), comori[2]->getPoz().getColoana(), '-');
 }
 
 Joc::~Joc() {
@@ -39,9 +44,9 @@ void Joc::runda() {
 
 		for (int i = 0; i < this->cautatori.size(); i++) {
 			//retin pozitia curenta (care v-a deveni anterioara odata ce cautatorul se muta)
-			Pozitie p = (*cautatori[i]).getPoz();
+			Pozitie p = cautatori[i]->getPoz();
 
-			//verific daca pe pozitia curenta se af;a o harta innacesibila cautatorului
+			//verific daca pe pozitia curenta se afla o harta innacesibila cautatorului
 			int ok = 0;
 			for (int j = 0; j < comori.size(); j++) {
 				if (comori[j]->getPoz() == p) {
@@ -50,17 +55,17 @@ void Joc::runda() {
 				}
 			}
 
-			//daca da, las marcajul comorii pe harta
+			//daca da, las pozitia marcata ca neexplorata
 			if(ok)
-				h->marchez(p.getLinie(), p.getColoana(), 'X');
+				h->marchez(p.getLinie(), p.getColoana(), '-');
 			
 			//daca nu, marchez casuta ca fiind vizitata
 			else
 				h->marchez(p.getLinie(), p.getColoana(), '|');
 
 			//mut cautatorul
-			cautatori[i]->mutare();
-			if(!(cautatori[i]->getPoz() == p))
+			cautatori[i]->mutare(*h);
+			if(!(cautatori[i]->getPoz() == p) && !ok)
 				h->cresteNrCasuteExplorate();
 
 			//verific unde a ajuns pe harta

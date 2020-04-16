@@ -1,5 +1,4 @@
 #include "Joc.h"
-#include <time.h>
 
 int main() {
 	int nrLin, nrCol;

@@ -3,6 +3,7 @@
 #include "Harta.h"
 #include <iostream>
 #include <string>
+#include <time.h>
 using namespace std;
 
 class Cautator {							//clasa abstracta pe care o mostenesc celelate clase de cautatori
@@ -19,6 +20,6 @@ public:
 	Pozitie getPoz() const;					//obtinere pozitie
 	void setStadiu(const string);			//setarea stdiu
 	string getStadiu() const;				//obtinere stadiu
-	virtual void mutare() = 0;				//metoda prin care fiecare cautator se muta cu o pozitie
+	virtual void mutare(Harta&) = 0;		//metoda prin care fiecare cautator se muta cu o pozitie
 };
 
