@@ -1,11 +1,12 @@
 #include "CautatorTip2.h"
 
 CautatorTip2::CautatorTip2(Harta& h) {
-	this->ID += "C2";
+	this->ID += "LC";
+	this->nume = "Lara Croft";
 	this->poz = new Pozitie(0, h.nrCol - 1);
 	this->pozAnt = new Pozitie(*poz);
 	arieVizibilitate = 1;
-	h.M[0][h.nrCol - 1] = 'C';
+	h.M[0][h.nrCol - 1] = 'L';
 }
 
 void CautatorTip2::mutare(Harta& h) {
@@ -188,5 +189,5 @@ void CautatorTip2::mutare(Harta& h) {
 		}
 	}
 
-	h.M[this->poz->getLinie()][this->poz->getColoana()] = 'C';
+	h.M[this->poz->getLinie()][this->poz->getColoana()] = 'L';
 }

@@ -69,34 +69,37 @@ void Joc::runda() {
 				h->cresteNrCasuteExplorate();
 
 			//verific unde a ajuns pe harta
-			string idCaut = cautatori[i]->getID();
+			string idCaut = cautatori[i]->getID(), numeCaut = cautatori[i]->getNume();
 			Pozitie p1 = cautatori[i]->getPoz();
 			ok = 0;
 
 			//daca a ramas pe aceeasi pozitie inseamna ca s-a blocat si deci nu mai poate participa la joc
 			if (p1 == p) {
-				cout << "Cautatorul " + idCaut.substr(0, 1) + " s-a blocat :( Better luck next time pal" << endl;
+				cout << numeCaut + " s-a blocat :( Better luck next time pal" << endl;
 				cautatori[i]->setStadiu("Blocat in runda " + to_string(idRunda));
 				ok = 1;
 			}
 
 			//daca a gasit comoara
-			for(int j = 0; j < this->comori.size(); j++)
-				if (p1 == comori[j]->getPoz()) {
-					set <string> comp = comori[i]->getCompatibil();
+			else {
+				for (int j = 0; j < this->comori.size(); j++) {
+					if (p1 == comori[j]->getPoz()) {
+						set<string> comp = comori[j]->getCompatibil();
 
-					//verific daca cautatorul este compatibil cu comoara gasita
-					//in caz afirmatic marchez comoara ca gasita si scot cautatorul de pe harta
-					if (comp.find(idCaut.substr(2, 4)) != comp.end()) {
-						comori[j]->gasitComoara(idCaut);
-						comori.erase(comori.begin() + j);
-						cautatori[i]->setStadiu("Gasit comoara in runda " + to_string(idRunda));
-						ok = 1;
-						break;
+						//verific daca cautatorul este compatibil cu comoara gasita
+						//in caz afirmatic marchez comoara ca gasita si scot cautatorul de pe harta
+						if (comp.find(idCaut.substr(2, 4)) != comp.end()) {
+							comori[j]->gasitComoara(numeCaut);
+							comori.erase(comori.begin() + j);
+							cautatori[i]->setStadiu("Gasit comoara in runda " + to_string(idRunda));
+							ok = 1;
+							break;
+						}
+						else
+							cout << numeCaut + " a gasit o comoara cu care nu este compatibil. Uneori pierzi alteori nu castigi" << endl;
 					}
-					else
-						cout << "Cautatorul " + idCaut.substr(0, 1) + " a gasit o comoara cu care nu este compatibil. Uneori pierzi alteori nu castigi" << endl;
 				}
+			}
 
 			//daca cautatorul se gaseste in unul dintre cazurile anterioare 
 			//atunci il scot din vecotrul de cautatori si il adaug in vectorul pentru clasament
@@ -114,7 +117,6 @@ void Joc::runda() {
 				break;
 			}
 		}
-		this->afisare();
 	}
 	else
 		throw exceptieJoc();
@@ -131,11 +133,24 @@ void Joc::afisare() {
 
 void Joc::clasament() {
 	cout << "----- !!! CLASAMENT !!! -----" << endl;
-	cout << "Boss de boss: Cautator " << Clasament[0]->getID().substr(0, 1)<< " - " + Clasament[0]->getStadiu() << endl;
-	cout << "Almost there: Cautator " << Clasament[1]->getID().substr(0, 1) << " - " + Clasament[1]->getStadiu() << endl;
-	cout << "Not great, not terrrible: Cautator " << Clasament[2]->getID().substr(0, 1) << " - " + Clasament[2]->getStadiu() << endl;
-	cout << "There was an attempt: Cautator " << Clasament[3]->getID().substr(0, 1) << " - " + Clasament[3]->getStadiu() << endl;
+	cout << "Boss de boss: " + Clasament[0]->getNume() + " - " + Clasament[0]->getStadiu() << endl;
+	cout << "Almost there: " + Clasament[1]->getNume() + " - " + Clasament[1]->getStadiu() << endl;
+	cout << "Not great, not terrrible: " + Clasament[2]->getNume() + " - " + Clasament[2]->getStadiu() << endl;
+	cout << "There was an attempt: " + Clasament[3]->getNume() + " - " + Clasament[3]->getStadiu() << endl;
+}
 
+void Joc::adaugClasament(Cautator* c) {
+	int i = 0;
+	while (i < this->Clasament.size() && (Clasament[i]->getStadiu()).substr(0, 1) == "G")
+		i++;
+	Clasament.insert(Clasament.begin() + i, c);
+}
+
+bool Joc::terminat() {
+	return (cautatori.size() == 0);
+}
+
+void Joc::afisareComoriRamase() {
 	//daca mai exista comori pe tabla afisez pozitia lor
 	if (this->comori.size()) {
 		cout << endl;
@@ -150,15 +165,4 @@ void Joc::clasament() {
 		}
 	}
 	cout << endl;
-}
-
-void Joc::adaugClasament(Cautator* c) {
-	int i = 0;
-	while (i < this->Clasament.size() && (Clasament[i]->getStadiu()).substr(0, 1) == "R")
-		i++;
-	Clasament.insert(Clasament.begin() + i, c);
-}
-
-bool Joc::terminat() {
-	return (cautatori.size() == 0);
 }

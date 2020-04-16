@@ -11,7 +11,7 @@ protected:
 	Pozitie* poz;
 	int arieVizibilitate;
 	static unsigned id;
-	string ID = "", stadiu = "";
+	string ID = "", stadiu = "", nume = "";
 
 public:
 	Cautator();								//constructor
@@ -20,6 +20,7 @@ public:
 	Pozitie getPoz() const;					//obtinere pozitie
 	void setStadiu(const string);			//setarea stdiu
 	string getStadiu() const;				//obtinere stadiu
+	string getNume() const;					//obtinere nume cautator;
 	virtual void mutare(Harta&) = 0;		//metoda prin care fiecare cautator se muta cu o pozitie
 };
 

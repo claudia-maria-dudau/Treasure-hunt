@@ -30,3 +30,7 @@ void Cautator::setStadiu(const string s) {
 string Cautator::getStadiu() const {
 	return this->stadiu;
 }
+
+string Cautator::getNume() const {
+	return this->nume;
+}

@@ -32,5 +32,6 @@ public:
 	void clasament();					//afisare clasament final
 	void adaugClasament(Cautator*);		//adaugare in vectorul Clasament
 	bool terminat();					//verificare daca s-a terminat jocul sau a fost oprit
+	void afisareComoriRamase();			//afisez comorileramase pe tabla
 };
 
