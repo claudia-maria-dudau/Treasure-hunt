@@ -139,7 +139,7 @@ void CautatorTip4::mutare(Harta& h) {
 				}
 
 				//daca numarul de pozitii accesibile din pozitia curenta este = cu
-				//numarul de poitii accesibile din vector
+				//numarul de pozitii accesibile din vector
 				//adaug pozitia curenta la vector
 				else if (nrPos == pozPos)
 					pozOpt.push_back(Pozitie(i, j));

@@ -295,9 +295,7 @@ void CautatorTip1::mutare(Harta& h) {
 		}
 	}
 
-	//daca se afla pe aceeasi pozitie cu pozitia anterioara inseamna ca ori este inceputul jocului ori s-a blocat
-	//ne intereseaza doar cazul in care abia a inceput jocul 
-	//deoarece daca jucatorul este blocat el nu o sa se poata muta oricum nicaieri
+	//daca se afla la inceputul jocului se alege random o mutare de start
 	else {
 		//se alege random prima mutare a jucatorului
 
