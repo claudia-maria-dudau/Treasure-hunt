@@ -94,7 +94,7 @@ void Joc::runda() {
 
 			//verific daca mai exista comori pe harta
 			//daca nu mai exista opresc jocul
-			if (comori.size() == 0) {
+			if (comori.size() == 0 && cautatori.size() != 0) {
 				adaugClasament(cautatori[0]);
 				cautatori.erase(cautatori.begin());
 				break;

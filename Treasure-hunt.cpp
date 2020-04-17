@@ -59,6 +59,7 @@ int main() {
 					j.runda();
 					j.afisare();
 				}
+				cout << "Starea finala: " << endl;
 				j.afisare();
 				break;
 			}
