@@ -50,6 +50,11 @@ void CautatorTip2::mutare(Harta& h) {
 						pozOpt.push_back(Pozitie(i, j));
 						dist = d;
 					}
+
+					//verific daca distanta pozitiei actuale este egala cu distanta pozitiilor din vector
+					//caz in care adaug pozitia actuala in vector
+					else if (d == dist)
+						pozOpt.push_back(Pozitie(i, j));
 				}
 			}
 		}
@@ -58,7 +63,7 @@ void CautatorTip2::mutare(Harta& h) {
 		//se alege random una dintre ele
 		if (pozOpt.size() > 1) {
 			delete this->poz;
-			//srand(time(NULL));
+			srand(time(NULL));
 			this->poz = new Pozitie(pozOpt[rand() % (pozOpt.size() - 1)]);
 		}
 
