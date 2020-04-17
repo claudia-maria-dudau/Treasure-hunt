@@ -126,28 +126,28 @@ void CautatorTip3::mutare(Harta& h) {
 								}
 							}
 						}
-					}
 
-					//daca vectorul este vid adaug pozitia in vector
-					if (pozOpt.size() == 0) {
-						pozOpt.push_back(Pozitie(i, j));
-						pozPos = nrPos;
-					}
+						//daca vectorul este vid adaug pozitia in vector
+						if (pozOpt.size() == 0) {
+							pozOpt.push_back(Pozitie(i, j));
+							pozPos = nrPos;
+						}
 
-					//daca numarul de pozitii accesibile din pozitia curenta este > decat
-					//cel accesibile din pozitia/pozitiile din vector
-					//golesc vctorul si adaug pozitia
-					else if (nrPos > pozPos) {
-						pozOpt.clear();
-						pozOpt.push_back(Pozitie(i, j));
-						pozPos = nrPos;
-					}
+						//daca numarul de pozitii accesibile din pozitia curenta este > decat
+						//cel accesibile din pozitia/pozitiile din vector
+						//golesc vctorul si adaug pozitia
+						else if (nrPos > pozPos) {
+							pozOpt.clear();
+							pozOpt.push_back(Pozitie(i, j));
+							pozPos = nrPos;
+						}
 
-					//daca numarul de pozitii accesibile din pozitia curenta este egal cu
-					//numarul de pozitii accesibile din vector
-					//adaug pozitia curenta la vector
-					else if (nrPos == pozPos)
-						pozOpt.push_back(Pozitie(i, j));
+						//daca numarul de pozitii accesibile din pozitia curenta este egal cu
+						//numarul de pozitii accesibile din vector
+						//adaug pozitia curenta la vector
+						else if (nrPos == pozPos)
+							pozOpt.push_back(Pozitie(i, j));
+					}
 				}
 			}
 

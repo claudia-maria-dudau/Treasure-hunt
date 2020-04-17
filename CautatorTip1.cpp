@@ -31,8 +31,8 @@ void CautatorTip1::mutare(Harta& h) {
 		//pentru fiecare cadran, cu exceptia celui in care se afla pozitia anterioara a cautatorului,
 		//calculez numarul de casute neexplorate 
 		vector<int> cadraneOpt;		//vector ce retine cadranul/cadranele cu numarul min de casute neexplorate
-		int neexp;					//numarul de casute neexplorate corespunzatoare cadaranului/cadranelor din vector
-		int posibil;				//numarul casutelor posibile pe care se poate deplasa cautatorul in
+		int neexp = 0;				//numarul de casute neexplorate corespunzatoare cadaranului/cadranelor din vector
+		int posibil = 0;			//numarul casutelor posibile pe care se poate deplasa cautatorul in
 									//cadarnul/cadranele din vector
 
 		//cadran 1
@@ -52,10 +52,12 @@ void CautatorTip1::mutare(Harta& h) {
 				}
 			}
 
-			//intrucat ne aflam in primul cadran, vectorul este gol, deci adaugam direct cadranul in vector
-			cadraneOpt.push_back(1);
-			neexp = nrNeexp;
-			posibil = nrPosib;
+			if (nrNeexp != 0) {
+				//intrucat ne aflam in primul cadran, vectorul este gol, deci adaugam direct cadranul in vector
+				cadraneOpt.push_back(1);
+				neexp = nrNeexp;
+				posibil = nrPosib;
+			}
 		}
 
 		//cadranul 2
@@ -75,37 +77,39 @@ void CautatorTip1::mutare(Harta& h) {
 				}
 			}
 
-			//daca vectorul este gol, adaug cadranul
-			if (cadraneOpt.size() == 0) {
-				cadraneOpt.push_back(2);
-				neexp = nrNeexp;
-				posibil = nrPosib;
-			}
+			if (nrNeexp != 0) {
+				//daca vectorul este gol, adaug cadranul
+				if (cadraneOpt.size() == 0) {
+					cadraneOpt.push_back(2);
+					neexp = nrNeexp;
+					posibil = nrPosib;
+				}
 
-			//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
-			//golesc vectorul si adaug cadranul
-			else if (nrNeexp > neexp) {
-				cadraneOpt.clear();
-				cadraneOpt.push_back(2);
-				neexp = nrNeexp;
-				posibil = nrPosib;
-			}
-
-			//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
-			else if (nrNeexp = neexp) {
-				//daca in cadranul curent se poate ajunge in mai multe casute decat din cadranele din vector
-				//golesc vectorul si adug cadranul curent
-				if (nrPosib > posibil) {
+				//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
+				//golesc vectorul si adaug cadranul
+				else if (nrNeexp > neexp) {
 					cadraneOpt.clear();
 					cadraneOpt.push_back(2);
 					neexp = nrNeexp;
 					posibil = nrPosib;
 				}
 
-				//daca, atat din cadranul curent cat si din cele din vector, 
-				//se poate ajunge in acelasi numar de casute, adaug cadarnul la vector
-				if (posibil == nrPosib)
-					cadraneOpt.push_back(2);
+				//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
+				else if (nrNeexp = neexp) {
+					//daca in cadranul curent se poate ajunge in mai multe casute decat din cadranele din vector
+					//golesc vectorul si adug cadranul curent
+					if (nrPosib > posibil) {
+						cadraneOpt.clear();
+						cadraneOpt.push_back(2);
+						neexp = nrNeexp;
+						posibil = nrPosib;
+					}
+
+					//daca, atat din cadranul curent cat si din cele din vector, 
+					//se poate ajunge in acelasi numar de casute, adaug cadarnul la vector
+					if (posibil == nrPosib)
+						cadraneOpt.push_back(2);
+				}
 			}
 		}
 
@@ -126,38 +130,40 @@ void CautatorTip1::mutare(Harta& h) {
 				}
 			}
 
-			//daca vectorul este gol, adaug cadranul
-			if (cadraneOpt.size() == 0) {
-				cadraneOpt.push_back(3);
-				neexp = nrNeexp;
-				posibil = nrPosib;
-			}
+			if (nrNeexp != 0) {
+				//daca vectorul este gol, adaug cadranul
+				if (cadraneOpt.size() == 0) {
+					cadraneOpt.push_back(3);
+					neexp = nrNeexp;
+					posibil = nrPosib;
+				}
 
-			//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
-			//golesc vectorul si adaug cadranul
-			else if (nrNeexp > neexp) {
-				cadraneOpt.clear();
-				cadraneOpt.push_back(3);
-				neexp = nrNeexp;
-				posibil = nrPosib;
-			}
-
-			//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
-			else if (nrNeexp = neexp) {
-				//daca in cadranul curent se poate ajunge in mai multe casute 
-				//decat din cadranul/cadranele din vector
-				//atunci golesc vectorul si adaug cadranul
-				if (nrPosib > posibil) {
+				//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
+				//golesc vectorul si adaug cadranul
+				else if (nrNeexp > neexp) {
 					cadraneOpt.clear();
 					cadraneOpt.push_back(3);
 					neexp = nrNeexp;
 					posibil = nrPosib;
 				}
 
-				//daca, atat din cadranul curent cat si din cele din vector, 
-				//se poate ajunge in acelasi numar de causte, adaug cadarnul la vector
-				if (posibil == nrPosib)
-					cadraneOpt.push_back(3);
+				//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
+				else if (nrNeexp = neexp) {
+					//daca in cadranul curent se poate ajunge in mai multe casute 
+					//decat din cadranul/cadranele din vector
+					//atunci golesc vectorul si adaug cadranul
+					if (nrPosib > posibil) {
+						cadraneOpt.clear();
+						cadraneOpt.push_back(3);
+						neexp = nrNeexp;
+						posibil = nrPosib;
+					}
+
+					//daca, atat din cadranul curent cat si din cele din vector, 
+					//se poate ajunge in acelasi numar de causte, adaug cadarnul la vector
+					if (posibil == nrPosib)
+						cadraneOpt.push_back(3);
+				}
 			}
 		}
 
@@ -178,38 +184,40 @@ void CautatorTip1::mutare(Harta& h) {
 				}
 			}
 
-			//daca vectorul este gol, adaug cadranul
-			if (cadraneOpt.size() == 0) {
-				cadraneOpt.push_back(4);
-				neexp = nrNeexp;
-				posibil = nrPosib;
-			}
+			if (nrNeexp != 0) {
+				//daca vectorul este gol, adaug cadranul
+				if (cadraneOpt.size() == 0) {
+					cadraneOpt.push_back(4);
+					neexp = nrNeexp;
+					posibil = nrPosib;
+				}
 
-			//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
-			//golesc vectorul si adaug cadranul
-			else if (nrNeexp > neexp) {
-				cadraneOpt.clear();
-				cadraneOpt.push_back(4);
-				neexp = nrNeexp;
-				posibil = nrPosib;
-			}
-
-			//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
-			else if (nrNeexp = neexp) {
-				//daca in cadranul curent se poate ajunge in mai multe casute
-				//decat din cadranul/cadranele din vector
-				//atunci golesc vectorul si adaug cadranul
-				if (nrPosib > posibil) {
+				//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
+				//golesc vectorul si adaug cadranul
+				else if (nrNeexp > neexp) {
 					cadraneOpt.clear();
 					cadraneOpt.push_back(4);
 					neexp = nrNeexp;
 					posibil = nrPosib;
 				}
 
-				//daca, atat din cadranul curent cat si din cele din vector, 
-				//se poate ajunge in acelasi numar de casute, adaug cadarnul la vector
-				if (posibil == nrPosib)
-					cadraneOpt.push_back(4);
+				//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
+				else if (nrNeexp = neexp) {
+					//daca in cadranul curent se poate ajunge in mai multe casute
+					//decat din cadranul/cadranele din vector
+					//atunci golesc vectorul si adaug cadranul
+					if (nrPosib > posibil) {
+						cadraneOpt.clear();
+						cadraneOpt.push_back(4);
+						neexp = nrNeexp;
+						posibil = nrPosib;
+					}
+
+					//daca, atat din cadranul curent cat si din cele din vector, 
+					//se poate ajunge in acelasi numar de casute, adaug cadarnul la vector
+					if (posibil == nrPosib)
+						cadraneOpt.push_back(4);
+				}
 			}
 		}
 
