@@ -6,6 +6,7 @@ class CautatorTip2 : public Cautator {		//clasa pentru cautatorii de tip 2
 
 public:
 	CautatorTip2(Harta&);					//constructor
+	~CautatorTip2();						//destructor
 	void mutare(Harta&);					//metoda prin care se misca pe tabla
 };
 

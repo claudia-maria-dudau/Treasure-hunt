@@ -2,6 +2,8 @@
 
 Pozitie::Pozitie(int l, int c): lin(l), col(c) {}
 
+Pozitie::Pozitie(const Pozitie& p): lin(p.lin), col(p.col) {}
+
 void Pozitie::setPozitie(int l, int c) {
 	this->lin = l;
 	this->col = c;

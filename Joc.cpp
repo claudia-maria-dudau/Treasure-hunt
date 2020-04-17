@@ -39,21 +39,21 @@ void Joc::runda() {
 
 		for (int i = 0; i < this->cautatori.size(); i++) {
 			//retin pozitia curenta (care v-a deveni anterioara odata ce cautatorul se muta)
-			Pozitie p = cautatori[i]->getPoz();
-			h->marchezVizitat(p.getLinie(), p.getColoana());
+			Pozitie pAnt = cautatori[i]->getPoz();
+			h->marchezVizitat(pAnt.getLinie(), pAnt.getColoana());
 
 			//mut cautatorul
 			cautatori[i]->mutare(*h);
-			if(cautatori[i]->getPoz() != p)
+			if(cautatori[i]->getPoz() != pAnt)
 				h->cresteNrCasuteExplorate();
 
 			//verific unde a ajuns pe harta
 			string idCaut = cautatori[i]->getID(), numeCaut = cautatori[i]->getNume();
-			Pozitie p1 = cautatori[i]->getPoz();
+			Pozitie pAct = cautatori[i]->getPoz();
 			int ok = 0;
 
 			//daca a ramas pe aceeasi pozitie inseamna ca s-a blocat si deci nu mai poate participa la joc
-			if (p1 == p) {
+			if (pAct == pAnt) {
 				cout << numeCaut + " s-a blocat :( Better luck next time pal" << endl;
 				cautatori[i]->setStadiu("Blocat in runda " + to_string(idRunda));
 				ok = 1;
@@ -62,7 +62,7 @@ void Joc::runda() {
 			//daca a gasit comoara
 			else {
 				for (int j = 0; j < this->comori.size(); j++) {
-					if (p1 == comori[j]->getPoz()) {
+					if (pAct == comori[j]->getPoz()) {
 						set<string> comp = comori[j]->getCompatibil();
 
 						//verific daca cautatorul este compatibil cu comoara gasita

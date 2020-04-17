@@ -56,6 +56,7 @@ int main() {
 			case 2:	//simulare integrala joc
 				while (!j.terminat()) {
 					j.runda();
+					j.afisare();
 				}
 				j.afisare();
 				break;

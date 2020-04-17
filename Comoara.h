@@ -16,7 +16,7 @@ protected:
 
 public:
 	Comoara(Harta& );									//constructor
-	~Comoara();											//destructor
+	virtual ~Comoara();									//destructor virtual
 	virtual void gasitComoara(const string) = 0;		//gasire comoara
 	Pozitie getPoz() const;								//obtinere pozitie
 	set<string> getCompatibil() const;					//obtinere lista de cautatoti compatibili cu comoara

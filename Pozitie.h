@@ -4,6 +4,7 @@ class Pozitie {														//clasa pentru retinerea pozitiei unui agent/comoar
 
 public:
 	Pozitie(int, int);												//constructor
+	Pozitie(const Pozitie& p);										//constructor de copiere
 	void setPozitie(int, int);										//setare pozitie
 	int getLinie() const;											//obtinere linie
 	int getColoana() const;											//obtinere coloana

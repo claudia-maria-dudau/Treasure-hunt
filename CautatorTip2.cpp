@@ -10,6 +10,10 @@ CautatorTip2::CautatorTip2(Harta& h) {
 	h.M[0][h.nrCol - 1] = 'L';
 }
 
+CautatorTip2::~CautatorTip2() {
+	delete this->pozAnt;
+}
+
 void CautatorTip2::mutare(Harta& h) {
 	//scopul lui este sa se indeparteze cat mai mult de pozitia anterioara
 	
@@ -19,10 +23,9 @@ void CautatorTip2::mutare(Harta& h) {
 	//pozitia anterioara ia valoarea pozitiei curente
 	delete this->pozAnt;
 	this->pozAnt = new Pozitie(*poz);
-	delete this->poz;
 
 	//daca se afla pe o pozitie diferita fata de cea anterioara
-	if (*poz != *pozAnt) {
+	if (lin != linAnt || col != colAnt) {
 		vector<Pozitie> pozOpt;		//vector in care retin pozitia/pozitiile cele mai indepartate de pozitia anterioara
 		double dist;				//distanta pozitiei/pozitiilor cele mai indepartate fata de pozitia anterioara
 
@@ -54,13 +57,16 @@ void CautatorTip2::mutare(Harta& h) {
 		//daca exist mai multe pozitii ce se afla la distante egale fata de pozitia anteriora
 		//se alege random una dintre ele
 		if (pozOpt.size() > 1) {
-			srand(time(NULL));
+			delete this->poz;
+			//srand(time(NULL));
 			this->poz = new Pozitie(pozOpt[rand() % (pozOpt.size() - 1)]);
 		}
 
 		//daca am o singura pozitie in vector, pe aceasta se va duce cautatorul
-		else if(pozOpt.size() == 1)
+		else if (pozOpt.size() == 1) {
+			delete this->poz;
 			this->poz = new Pozitie(pozOpt[0]);
+		}
 	}
 
 	//daca se afla pe aceeasi pozitie cu pozitia anterioara inseamna ca ori este inceputul jocului ori s-a blocat
@@ -68,7 +74,6 @@ void CautatorTip2::mutare(Harta& h) {
 	//deoarece daca jucatorul este blocat el nu o sa se poata muta oricum nicaieri
 	else {
 		//se alege random prima mutare a jucatorului
-		srand(time(NULL));
 		int i = rand() % 3;
 		switch (i) {
 		case 0:	//se muta la stanga
@@ -83,5 +88,6 @@ void CautatorTip2::mutare(Harta& h) {
 		}
 	}
 
+	//marchez pozitia pe care ajung
 	h.M[this->poz->getLinie()][this->poz->getColoana()] = 'L';
 }
