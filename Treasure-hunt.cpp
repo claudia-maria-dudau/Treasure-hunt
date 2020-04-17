@@ -23,6 +23,7 @@ int main() {
 		cout << "Cum doriti sa se desfasoare jocul?" << endl;
 		cout << "1 - Runda cu runda, cu posibilitatea de a opri jocul cand doriti" << endl;
 		cout << "2 - Simulare integrala joc" << endl;
+		cout << "Optiune: ";
 		int OP, op = 1;
 		cin >> OP;
 		cout << endl;

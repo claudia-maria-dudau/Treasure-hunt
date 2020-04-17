@@ -151,7 +151,7 @@ void CautatorTip4::mutare(Harta& h) {
 		if (pozOpt.size() > 1) {
 			delete this->poz;
 			srand(time(NULL));
-			this->poz = new Pozitie(pozOpt[rand() % (pozOpt.size() - 1)]);
+			this->poz = new Pozitie(pozOpt[rand() % pozOpt.size()]);
 		}
 
 		//daca am o singura pozitie in vector, pe acesta se va duce cautatorul

@@ -227,7 +227,7 @@ void CautatorTip1::mutare(Harta& h) {
 			//daca exista mai multe cadrane optime se alege la intamplare unul dintre acestea
 			if (cadraneOpt.size() > 1) {
 				srand(time(NULL));
-				cadran = cadraneOpt[rand() % (cadraneOpt.size() - 1)];
+				cadran = cadraneOpt[rand() % cadraneOpt.size()];
 			}
 
 			//daca exista un singur cadran se alege acesta
