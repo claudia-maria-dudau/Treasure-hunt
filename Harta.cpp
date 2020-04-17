@@ -25,8 +25,8 @@ void Harta::cresteNrCasuteExplorate() {
 	this->nrCasuteExplorate++;
 }
 
-void Harta::marchez(const int l, const int c, const char ch) {
-	this->M[l][c] = ch;
+void Harta::marchezVizitat(const int l, const int c) {
+	this->M[l][c] = '|';
 }
 
 ostream& operator <<(ostream& out, Harta& h) {

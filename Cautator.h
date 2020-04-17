@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <vector>
 using namespace std;
 
 class Cautator {							//clasa abstracta pe care o mostenesc celelate clase de cautatori

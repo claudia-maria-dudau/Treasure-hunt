@@ -9,7 +9,7 @@ using namespace std;
 
 class Comoara {											//clasa abstracta de baza pentru comorile de pe harta
 protected:
-	const Pozitie* poz;
+	Pozitie* poz;
 	static unsigned id;
 	string ID = "";
 	set<string> compatibil;
@@ -20,4 +20,5 @@ public:
 	virtual void gasitComoara(const string) = 0;		//gasire comoara
 	Pozitie getPoz() const;								//obtinere pozitie
 	set<string> getCompatibil() const;					//obtinere lista de cautatoti compatibili cu comoara
+	void repozitionare(Harta&);							//repozitionez comoara
 };

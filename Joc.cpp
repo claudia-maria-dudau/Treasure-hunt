@@ -16,11 +16,6 @@ Joc::Joc(const int dimLin, const int dimCol) {
 	this->comori.push_back(new ComoaraTip1(*h));
 	this->comori.push_back(new ComoaraTip2(*h));
 	this->comori.push_back(new ComoaraTip3(*h));
-	
-	//demarchez comorile de pe harta
-	this->h->marchez(comori[0]->getPoz().getLinie(), comori[0]->getPoz().getColoana(), '-');
-	this->h->marchez(comori[1]->getPoz().getLinie(), comori[1]->getPoz().getColoana(), '-');
-	this->h->marchez(comori[2]->getPoz().getLinie(), comori[2]->getPoz().getColoana(), '-');
 }
 
 Joc::~Joc() {
@@ -45,33 +40,17 @@ void Joc::runda() {
 		for (int i = 0; i < this->cautatori.size(); i++) {
 			//retin pozitia curenta (care v-a deveni anterioara odata ce cautatorul se muta)
 			Pozitie p = cautatori[i]->getPoz();
-
-			//verific daca pe pozitia curenta se afla o harta innacesibila cautatorului
-			int ok = 0;
-			for (int j = 0; j < comori.size(); j++) {
-				if (comori[j]->getPoz() == p) {
-					ok = 1;
-					break;
-				}
-			}
-
-			//daca da, las pozitia marcata ca neexplorata
-			if(ok)
-				h->marchez(p.getLinie(), p.getColoana(), '-');
-			
-			//daca nu, marchez casuta ca fiind vizitata
-			else
-				h->marchez(p.getLinie(), p.getColoana(), '|');
+			h->marchezVizitat(p.getLinie(), p.getColoana());
 
 			//mut cautatorul
 			cautatori[i]->mutare(*h);
-			if(!(cautatori[i]->getPoz() == p) && !ok)
+			if(cautatori[i]->getPoz() != p)
 				h->cresteNrCasuteExplorate();
 
 			//verific unde a ajuns pe harta
 			string idCaut = cautatori[i]->getID(), numeCaut = cautatori[i]->getNume();
 			Pozitie p1 = cautatori[i]->getPoz();
-			ok = 0;
+			int ok = 0;
 
 			//daca a ramas pe aceeasi pozitie inseamna ca s-a blocat si deci nu mai poate participa la joc
 			if (p1 == p) {
@@ -95,8 +74,12 @@ void Joc::runda() {
 							ok = 1;
 							break;
 						}
-						else
+
+						//daca cautatorul nu este compatibil cu comoara repozitionez comoara pe harta
+						else {
 							cout << numeCaut + " a gasit o comoara cu care nu este compatibil. Uneori pierzi alteori nu castigi" << endl;
+							comori[j]->repozitionare(*h);
+						}
 					}
 				}
 			}

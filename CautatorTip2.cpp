@@ -1,4 +1,5 @@
 #include "CautatorTip2.h"
+#include <cmath>
 
 CautatorTip2::CautatorTip2(Harta& h) {
 	this->ID += "LC";
@@ -18,160 +19,53 @@ void CautatorTip2::mutare(Harta& h) {
 	//pozitia anterioara ia valoarea pozitiei curente
 	delete this->pozAnt;
 	this->pozAnt = new Pozitie(*poz);
-	
-	//daca se afla pe aceeasi line cu pozitia anterioara
-	if (lin == linAnt) {
-		//daca se afla in dreapta pozitiei anterioare
-		if (col == colAnt + 1) {
-			if (col + 1 <h.nrCol && h.M[lin][col + 1] == '-')
-				this->poz->setPozitie(lin, col + 1);
-			else if (lin - 1 >= 0 && col + 1 <h.nrCol && h.M[lin - 1][col + 1] == '-')
-				this->poz->setPozitie(lin - 1, col + 1);
-			else if (lin + 1 < h.nrLin && col + 1 < h.nrCol && h.M[lin + 1][col + 1] == '-')
-				this->poz->setPozitie(lin + 1, col + 1);
-			else if (lin - 1 >= 0 && h.M[lin - 1][col] == '-')
-				this->poz->setPozitie(lin - 1, col);
-			else if (lin + 1 < h.nrLin && h.M[lin + 1][col] == '-')
-				this->poz->setPozitie(lin + 1, col);
-			else if (lin - 1 >= 0 && h.M[lin - 1][col - 1] == '-')
-				this->poz->setPozitie(lin - 1, col - 1);
-			else if (lin + 1 < h.nrLin && h.M[lin + 1][col - 1] == '-')
-				this->poz->setPozitie(lin + 1, col - 1);
+	delete this->poz;
+
+	//daca se afla pe o pozitie diferita fata de cea anterioara
+	if (*poz != *pozAnt) {
+		vector<Pozitie> pozOpt;		//vector in care retin pozitia/pozitiile cele mai indepartate de pozitia anterioara
+		double dist;				//distanta pozitiei/pozitiilor cele mai indepartate fata de pozitia anterioara
+
+		//calculez distanta dintre pozitia anterioara si pozitiile posibile pe care cautatorul se poate deplasa
+		//si retin pozitia/pozitiile ce au distanta maxima fata de cea anterioara
+		for (int i = lin - 1; i <= lin + 1; i++) {
+			for (int j = col - 1; j <= col + 1; j++) {
+				//verific daca pozitia exista in matrice si este accesibila cautatorului
+				if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+					double d = sqrt(pow((linAnt - i), 2) + pow((colAnt - j), 2));
+
+					//daca vectorul este gol adaug pozitia
+					if (pozOpt.size() == 0) {
+						pozOpt.push_back(Pozitie(i, j));
+						dist = d;
+					}
+
+					//verific daca distanta pozitiei actuale este mai mare decat distanta pozitiilor din vector
+					//caz in care golesc vectorul si adaug noua pozitie
+					else if (d > dist) {
+						pozOpt.clear();
+						pozOpt.push_back(Pozitie(i, j));
+						dist = d;
+					}
+				}
+			}
 		}
 
-		//daca se afla in stanga pozitiei anterioare
-		else {
-			if (col - 1 >= 0 && h.M[lin][col - 1] == '-')
-				this->poz->setPozitie(lin, col - 1);
-			else if (lin + 1 < h.nrLin && col - 1 >= 0 && h.M[lin + 1][col - 1] == '-')
-				this->poz->setPozitie(lin + 1, col - 1);
-			else if (lin - 1 >= 0 && col - 1 >= 0 && h.M[lin - 1][col - 1] == '-')
-				this->poz->setPozitie(lin - 1, col - 1);
-			else if (lin + 1 < h.nrLin && h.M[lin + 1][col] == '-')
-				this->poz->setPozitie(lin + 1, col);
-			else if (lin - 1 >= 0 && h.M[lin - 1][col] == '-')
-				this->poz->setPozitie(lin - 1, col);
-			else if (lin + 1 < h.nrLin && h.M[lin + 1][col + 1] == '-')
-				this->poz->setPozitie(lin + 1, col + 1);
-			else if (lin - 1 >= 0 && h.M[lin - 1][col + 1] == '-')
-				this->poz->setPozitie(lin - 1, col + 1);
-		}
-	}
-
-	//daca se afla pe aceeasi coloana cu pozitia anterioara
-	else if (col == colAnt) {
-		//daca se afla deasupra pozitiei anterioare
-		if (lin == linAnt - 1) {
-			if (lin - 1 >= 0 && h.M[lin - 1][col] == '-')
-				this->poz->setPozitie(lin - 1, col);
-			else if (lin - 1 >= 0 && col - 1 >= 0 && h.M[lin - 1][col - 1] == '-')
-				this->poz->setPozitie(lin - 1, col - 1);
-			else if (lin - 1 >= 0 && col + 1 < h.nrCol && h.M[lin - 1][col + 1] == '-')
-				this->poz->setPozitie(lin - 1, col + 1);
-			else if (col - 1 >= 0 && h.M[lin][col - 1] == '-')
-				this->poz->setPozitie(lin, col - 1);
-			else if (col + 1 < h.nrCol && h.M[lin][col + 1] == '-')
-				this->poz->setPozitie(lin, col + 1);
-			else if (col - 1 >= 0 && h.M[lin + 1][col - 1] == '-')
-				this->poz->setPozitie(lin + 1, col - 1);
-			else if (col + 1 < h.nrCol && h.M[lin + 1][col + 1] == '-')
-				this->poz->setPozitie(lin + 1, col + 1);
+		//daca exist mai multe pozitii ce se afla la distante egale fata de pozitia anteriora
+		//se alege random una dintre ele
+		if (pozOpt.size() > 1) {
+			srand(time(NULL));
+			this->poz = new Pozitie(pozOpt[rand() % (pozOpt.size() - 1)]);
 		}
 
-		//daca se afla sub pozitia anterioara
-		else {
-			if (lin + 1 < h.nrLin && h.M[lin + 1][col] == '-')
-				this->poz->setPozitie(lin + 1, col);
-			else if (lin + 1 < h.nrLin && col + 1 < h.nrCol && h.M[lin + 1][col + 1] == '-')
-				this->poz->setPozitie(lin + 1, col + 1);
-			else if (lin + 1 < h.nrLin && col - 1 >= 0 && h.M[lin + 1][col - 1] == '-')
-				this->poz->setPozitie(lin + 1, col - 1);
-			else if (col + 1 < h.nrCol && h.M[lin][col + 1] == '-')
-				this->poz->setPozitie(lin, col + 1);
-			else if (col - 1 >= 0 && h.M[lin][col - 1] == '-')
-				this->poz->setPozitie(lin, col - 1);
-			else if (col + 1 < h.nrCol && h.M[lin - 1][col + 1] == '-')
-				this->poz->setPozitie(lin - 1, col + 1);
-			else if (col - 1 >= 0 && h.M[lin - 1][col - 1] == '-')
-				this->poz->setPozitie(lin - 1, col - 1);
-		}		
-	}
-
-	//daca se afla deasupra si la dreapta fata de pozitia initiala
-	else if (lin == linAnt - 1 && col == colAnt + 1) {
-		if (lin - 1 >= 0 && col + 1 < h.nrCol && h.M[lin - 1][col + 1] == '-')
-			this->poz->setPozitie(lin - 1, col + 1);
-		else if (lin - 1 >= 0 && h.M[lin - 1][col] == '-')
-			this->poz->setPozitie(lin - 1, col);
-		else if (col + 1 < h.nrCol && h.M[lin][col + 1] == '-')
-			this->poz->setPozitie(lin, col + 1);
-		else if (lin - 1 >= 0 && h.M[lin - 1][col - 1] == '-')
-			this->poz->setPozitie(lin - 1, col - 1);
-		else if (col + 1 < h.nrCol && h.M[lin + 1][col + 1] == '-')
-			this->poz->setPozitie(lin + 1, col + 1);
-		else if(h.M[lin][col - 1] == '-')
-			this->poz->setPozitie(lin, col - 1);
-		else if(h.M[lin + 1][col] == '-')
-			this->poz->setPozitie(lin + 1, col);
-	}
-
-	//daca se afla deasupra si la stanga fata de pozitia initiala
-	else if (lin == linAnt - 1 && col == colAnt - 1) {
-		if (lin - 1 >= 0 && col - 1 >= 0 && h.M[lin - 1][col - 1] == '-')
-			this->poz->setPozitie(lin - 1, col - 1);
-		else if (col - 1 >= 0 && h.M[lin][col - 1] == '-')
-			this->poz->setPozitie(lin, col - 1);
-		else if (lin - 1 >= 0 && h.M[lin - 1][col] == '-')
-			this->poz->setPozitie(lin - 1, col);
-		else if (col - 1 >= 0 && h.M[lin + 1][col - 1] == '-')
-			this->poz->setPozitie(lin + 1, col - 1);
-		else if (lin - 1 >= 0 && h.M[lin - 1][col + 1] == '-')
-			this->poz->setPozitie(lin - 1, col + 1);
-		else if (h.M[lin + 1][col] == '-')
-			this->poz->setPozitie(lin + 1, col);
-		else if (h.M[lin][col + 1] == '-')
-			this->poz->setPozitie(lin, col + 1);
-	}
-
-	//daca se afla sub si in dreapta pozitieie anterioare
-	else if (lin == linAnt + 1 && col == colAnt + 1) {
-		if(lin + 1 < h.nrLin && col + 1 < h.nrCol && h.M[lin + 1][col + 1] == '-')
-			this->poz->setPozitie(lin + 1, col + 1);
-		else if (col + 1 < h.nrCol && h.M[lin][col + 1] == '-')
-			this->poz->setPozitie(lin, col + 1);
-		else if (lin + 1 < h.nrLin && h.M[lin + 1][col] == '-')
-			this->poz->setPozitie(lin + 1, col);
-		else if (col + 1 < h.nrCol && h.M[lin - 1][col + 1] == '-')
-			this->poz->setPozitie(lin - 1, col + 1);
-		else if (lin + 1 < h.nrLin && h.M[lin + 1][col - 1] == '-')
-			this->poz->setPozitie(lin + 1, col - 1);
-		else if (h.M[lin - 1][col] == '-')
-			this->poz->setPozitie(lin - 1, col);
-		else if (h.M[lin][col - 1] == '-')
-			this->poz->setPozitie(lin, col - 1);
-	}
-
-	//daca se afla sub si in stanga pozitiei anterioare
-	else if (lin == linAnt + 1 && col == colAnt - 1) {
-		if(lin + 1 < h.nrLin && col - 1 >= 0 && h.M[lin + 1][col - 1] == '-')
-			this->poz->setPozitie(lin + 1, col - 1);
-		else if (lin + 1 < h.nrLin && h.M[lin + 1][col] == '-')
-			this->poz->setPozitie(lin + 1, col);
-		else if (col - 1 >= 0 && h.M[lin][col - 1] == '-')
-			this->poz->setPozitie(lin, col - 1);
-		else if (lin + 1 < h.nrLin && h.M[lin + 1][col + 1] == '-')
-			this->poz->setPozitie(lin + 1, col + 1);
-		else if (col - 1 >= 0 && h.M[lin - 1][col - 1] == '-')
-			this->poz->setPozitie(lin - 1, col - 1);
-		else if (h.M[lin][col + 1] == '-')
-			this->poz->setPozitie(lin, col + 1);
-		else if (h.M[lin - 1][col] == '-')
-			this->poz->setPozitie(lin - 1, col);
+		//daca am o singura pozitie in vector, pe aceasta se va duce cautatorul
+		else if(pozOpt.size() == 1)
+			this->poz = new Pozitie(pozOpt[0]);
 	}
 
 	//daca se afla pe aceeasi pozitie cu pozitia anterioara inseamna ca ori este inceputul jocului ori s-a blocat
-	//ne intereseaza doar cazul in care abia a inceput jocul
-	//daca jucatorul este blocat el nu o sa se poata oricum muta nicaieri
+	//ne intereseaza doar cazul in care abia a inceput jocul 
+	//deoarece daca jucatorul este blocat el nu o sa se poata muta oricum nicaieri
 	else {
 		//se alege random prima mutare a jucatorului
 		srand(time(NULL));
