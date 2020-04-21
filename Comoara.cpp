@@ -21,9 +21,10 @@ Comoara::Comoara(Harta& h) {
 }
 
 Comoara::~Comoara() {
+	this->id = 0;
 	this->ID = "";
 	delete this->poz;
-	delete this;
+	this->compatibil.clear();
 }
 
 Pozitie Comoara::getPoz() const {

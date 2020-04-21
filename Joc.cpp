@@ -20,14 +20,9 @@ Joc::Joc(const int dimLin, const int dimCol) {
 
 Joc::~Joc() {
 	this->idRunda = 0;
-
-	//stergere vector cautatori
 	this->cautatori.clear();
-
-	//stergere vector comori
 	this->comori.clear();
-
-	//stergere harta
+	this->Clasament.clear();
 	delete h;
 }
 

@@ -10,9 +10,9 @@ Cautator::Cautator() {
 
 Cautator::~Cautator() {
 	this->arieVizibilitate = 0;
-	this->ID = this->stadiu = "";
+	this->id = 0;
+	this->ID = this->stadiu = this->nume = "";
 	delete this->poz;
-	delete this;
 }
 
 string Cautator::getID() const {
