@@ -39,23 +39,19 @@ void Joc::runda() {
 
 			//mut cautatorul
 			cautatori[i]->mutare(*h);
-			if(cautatori[i]->getPoz() != pAnt)
-				h->cresteNrCasuteExplorate();
 
 			//verific unde a ajuns pe harta
 			string idCaut = cautatori[i]->getID(), numeCaut = cautatori[i]->getNume();
 			Pozitie pAct = cautatori[i]->getPoz();
 			int ok = 0;
 
-			//daca a ramas pe aceeasi pozitie inseamna ca s-a blocat si deci nu mai poate participa la joc
-			if (pAct == pAnt) {
-				cout << numeCaut + " s-a blocat :( Better luck next time pal" << endl;
-				cautatori[i]->setStadiu("Blocat in runda " + to_string(idRunda));
-				ok = 1;
-			}
+			//daca s-a putut muta
+			if (pAct != pAnt) {
+				h->cresteNrCasuteExplorate();
+				cout << "Cautatorul " + cautatori[i]->getNume() + " s-a mutat de pe pozitia (" << pAnt.getLinie() << ", " << pAnt.getColoana() << ") ";
+				cout << "pe pozitia (" << pAct.getLinie() << ", " << pAct.getColoana() << ")" << endl;
 
-			//daca a gasit comoara
-			else {
+				//daca a gasit comoara
 				for (int j = 0; j < this->comori.size(); j++) {
 					if (pAct == comori[j]->getPoz()) {
 						set<string> comp = comori[j]->getCompatibil();
@@ -79,7 +75,14 @@ void Joc::runda() {
 				}
 			}
 
-			//daca cautatorul se gaseste in unul dintre cazurile anterioare 
+			//daca a ramas pe aceeasi pozitie inseamna ca s-a blocat si deci nu mai poate participa la joc
+			else {
+				cout << numeCaut + " s-a blocat :( Better luck next time pal" << endl;
+				cautatori[i]->setStadiu("Blocat in runda " + to_string(idRunda));
+				ok = 1;
+			}
+
+			//daca cautatorul s-a blocat/ a gasit o comoara cu care este compatibil
 			//atunci il scot din vecotrul de cautatori si il adaug in vectorul pentru clasament
 			if (ok) {
 				adaugClasament(cautatori[i]);
