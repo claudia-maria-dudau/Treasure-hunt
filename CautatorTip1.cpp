@@ -30,10 +30,15 @@ void CautatorTip1::mutare(Harta& h) {
 	if (lin != linAnt || col != colAnt) {
 		//pentru fiecare cadran, cu exceptia celui in care se afla pozitia anterioara a cautatorului,
 		//calculez numarul de casute neexplorate 
-		vector<int> cadraneOpt;		//vector ce retine cadranul/cadranele cu numarul min de casute neexplorate
-		int neexp = 0;				//numarul de casute neexplorate corespunzatoare cadaranului/cadranelor din vector
-		int posibil = 0;			//numarul casutelor posibile pe care se poate deplasa cautatorul in
-									//cadarnul/cadranele din vector
+
+		//vector ce retine cadranul/cadranele cu numarul min de casute neexplorate
+		vector<int> cadraneOpt;		
+
+		//numarul de casute neexplorate corespunzatoare cadaranului/cadranelor din vector
+		int neexp = 0;				
+
+		//numarul casutelor posibile pe care se poate deplasa cautatorul in cadarnul/cadranele din vector
+		int posibil = 0;			
 
 		//cadran 1
 		//verific ca pozitia anterioara sa nu se alfe in cadranul 1
@@ -42,7 +47,7 @@ void CautatorTip1::mutare(Harta& h) {
 			for (int i = lin - 2; i <= lin - 1; i++) {
 				for (int j = col - 2; j <= col; j++) {
 					//verific ca pozitia sa existe in matrice si sa fie neexplorata
-					if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
 						//verific daca poate ajunge pe pozitia respectiva
@@ -67,7 +72,7 @@ void CautatorTip1::mutare(Harta& h) {
 			for (int i = lin - 2; i <= lin; i++) {
 				for (int j = col + 1; j <= col + 2; j++) {
 					//verific ca pozitia sa existe in matrice si sa fie neexplorata
-					if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
 						//verific daca poate ajunge pe pozitia respectiva
@@ -120,7 +125,7 @@ void CautatorTip1::mutare(Harta& h) {
 			for (int i = lin + 1; i <= lin + 2; i++) {
 				for (int j = col; j <= col + 2; j++) {
 					//verific ca pozitia sa existe in matrice si sa fie neexplorata
-					if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
 						//verific daca poate ajunge pe pozitia respectiva
@@ -174,7 +179,7 @@ void CautatorTip1::mutare(Harta& h) {
 			for (int i = lin; i <= lin + 2; i++) {
 				for (int j = col - 2; j <= col - 1; j++) {
 					//verific ca pozitia sa existe in matrice si sa fie neexplorata
-					if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
 						//verific daca poate ajunge pe pozitia respectiva
@@ -251,9 +256,9 @@ void CautatorTip1::mutare(Harta& h) {
 						this->poz->setPozitie(lin - 1, col);
 				}
 				else {
-					if (lin - 1 >= 0 && col - 1 >= 0 && (h.M[lin - 1][col - 1] == '-' || h.M[lin - 1][col - 1] == 'X'))
+					if (h.apartine(lin - 1, col - 1) && (h.M[lin - 1][col - 1] == '-' || h.M[lin - 1][col - 1] == 'X'))
 						this->poz->setPozitie(lin - 1, col - 1);
-					else if (lin - 1 >= 0 && (h.M[lin - 1][col] == '-' || h.M[lin - 1][col] == 'X'))
+					else if (h.apartine(lin - 1, col) && (h.M[lin - 1][col] == '-' || h.M[lin - 1][col] == 'X'))
 						this->poz->setPozitie(lin - 1, col);
 				}
 				break;
@@ -265,9 +270,9 @@ void CautatorTip1::mutare(Harta& h) {
 						this->poz->setPozitie(lin, col + 1);
 				}
 				else {
-					if (lin - 1 >= 0 && col + 1 < h.nrCol && (h.M[lin - 1][col + 1] == '-' || h.M[lin - 1][col + 1] == 'X'))
+					if (h.apartine(lin - 1, col + 1) < h.nrCol && (h.M[lin - 1][col + 1] == '-' || h.M[lin - 1][col + 1] == 'X'))
 						this->poz->setPozitie(lin - 1, col + 1);
-					else if (col + 1 <h.nrCol && (h.M[lin][col + 1] == '-' || h.M[lin][col + 1] == 'X'))
+					else if (h.apartine(lin, col + 1) && (h.M[lin][col + 1] == '-' || h.M[lin][col + 1] == 'X'))
 						this->poz->setPozitie(lin, col + 1);
 				}
 				break;
@@ -279,9 +284,9 @@ void CautatorTip1::mutare(Harta& h) {
 						this->poz->setPozitie(lin + 1, col);
 				}
 				else {
-					if (lin + 1 < h.nrLin && col + 1 < h.nrLin && (h.M[lin + 1][col + 1] == '-' || h.M[lin + 1][col + 1] == 'X'))
+					if (h.apartine(lin + 1, col + 1) && (h.M[lin + 1][col + 1] == '-' || h.M[lin + 1][col + 1] == 'X'))
 						this->poz->setPozitie(lin + 1, col + 1);
-					else if (lin + 1 < h.nrLin && (h.M[lin + 1][col] == '-' || h.M[lin + 1][col] == 'X'))
+					else if (h.apartine(lin + 1, col) && (h.M[lin + 1][col] == '-' || h.M[lin + 1][col] == 'X'))
 						this->poz->setPozitie(lin + 1, col);
 				}
 				break;
@@ -293,9 +298,9 @@ void CautatorTip1::mutare(Harta& h) {
 						this->poz->setPozitie(lin, col - 1);
 				}
 				else {
-					if (lin + 1 <h.nrLin && col - 1 >= 0 && (h.M[lin + 1][col - 1] == '-' || h.M[lin + 1][col - 1] == 'X'))
+					if (h.apartine(lin + 1, col - 1) && (h.M[lin + 1][col - 1] == '-' || h.M[lin + 1][col - 1] == 'X'))
 						this->poz->setPozitie(lin + 1, col - 1);
-					else if (col - 1 >= 0 && (h.M[lin][col - 1] == '-' || h.M[lin][col - 1] == 'X'))
+					else if (h.apartine(lin, col - 1) && (h.M[lin][col - 1] == '-' || h.M[lin][col - 1] == 'X'))
 						this->poz->setPozitie(lin, col - 1);
 				}
 				break;

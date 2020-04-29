@@ -29,6 +29,10 @@ void Harta::marchezVizitat(const int l, const int c) {
 	this->M[l][c] = '|';
 }
 
+bool Harta::apartine(const int lin, const int col) const {
+	return (lin >= 0 && lin < nrLin && col >= 0 && col < nrCol);
+}
+
 ostream& operator <<(ostream& out, Harta& h) {
 	for (int i = 0; i < h.nrLin; i++) {
 		for (int j = 0; j < h.nrCol; j++)

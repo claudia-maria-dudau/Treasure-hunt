@@ -26,15 +26,18 @@ void CautatorTip2::mutare(Harta& h) {
 
 	//daca se afla pe o pozitie diferita fata de cea anterioara
 	if (lin != linAnt || col != colAnt) {
-		vector<Pozitie> pozOpt;		//vector in care retin pozitia/pozitiile cele mai indepartate de pozitia anterioara
-		double dist;				//distanta pozitiei/pozitiilor cele mai indepartate fata de pozitia anterioara
+		//vector in care retin pozitia/pozitiile cele mai indepartate de pozitia anterioara
+		vector<Pozitie> pozOpt;		
+
+		//distanta pozitiei/pozitiilor cele mai indepartate fata de pozitia anterioara
+		double dist;				
 
 		//calculez distanta dintre pozitia anterioara si pozitiile posibile pe care cautatorul se poate deplasa
 		//si retin pozitia/pozitiile ce au distanta maxima fata de cea anterioara
 		for (int i = lin - 1; i <= lin + 1; i++) {
 			for (int j = col - 1; j <= col + 1; j++) {
 				//verific daca pozitia exista in matrice si este accesibila cautatorului
-				if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+				if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 					double d = sqrt(pow((linAnt - i), 2) + pow((colAnt - j), 2));
 
 					//daca vectorul este gol adaug pozitia

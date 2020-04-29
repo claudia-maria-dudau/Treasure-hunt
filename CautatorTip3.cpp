@@ -37,7 +37,7 @@ void CautatorTip3::mutare(Harta& h) {
 		for (int i = lin - 1; i <= lin + 1; i++) {
 			for (int j = col - 1; j <= col + 1; j++) {
 				//daca pozitia exista si pe aceasta se afla un cautator
-				if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol) {
+				if (h.apartine(i, j)) {
 					if (h.M[i][j] != '-' || h.M[i][j] != '|' || h.M[i][j] != 'X' || h.M[i][j] != 'B') {
 						pozCaut = Pozitie(i, j);
 						break;
@@ -47,15 +47,18 @@ void CautatorTip3::mutare(Harta& h) {
 		}
 
 		if (pozCaut != Pozitie(0, 0)) {
-			vector<Pozitie> pozOpt;		//vector in care retin pozitia/pozitiile cele mai indepartate de cautator
-			double dist;				//distanta pozitiei/pozitiilor cele mai indepartate fata de cautator
+			//vector in care retin pozitia/pozitiile cele mai indepartate de cautator
+			vector<Pozitie> pozOpt;	
+
+			//distanta pozitiei/pozitiilor cele mai indepartate fata de cautator
+			double dist;				
 
 			//calculez distanta dintre pozitia cautatorului si pozitiile posibile pe care se poate deplasa
 			//si retin pozitia/pozitiile ce au distanta maxima fata de cea a cautatorului
 			for (int i = lin - 1; i <= lin + 1; i++) {
 				for (int j = col - 1; j <= col + 1; j++) {
 					//verific daca pozitia exista in matrice si este accesibila cautatorului curent
-					if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						double d = sqrt(pow((pozCaut.getLinie() - i), 2) + pow((pozCaut.getColoana() - j), 2));
 
 						//daca vectorul este gol adaug pozitia
@@ -99,8 +102,11 @@ void CautatorTip3::mutare(Harta& h) {
 		//daca nu se afla langa un cautator determin pozitia optima pe care se poate deplasa
 		//(pozitia cu cele mai multe posibilitati de continuare si care nu se afla langa un alt cautator)
 		else {
-			vector<Pozitie> pozOpt;			//vector ce retine pozitia/pozitiile optime pe care se poate deplasa cautatorul
-			int pozPos = 0;					//numarul de pozitii accesibile pentru pozitia/pozitiile din vector
+			//vector ce retine pozitia/pozitiile optime pe care se poate deplasa cautatorul
+			vector<Pozitie> pozOpt;	
+
+			//numarul de pozitii accesibile pentru pozitia/pozitiile din vector
+			int pozPos = 0;					
 
 			//pentru fiecare pozitie accesibila cautatorului numar la cate pozitii are acces si
 			//daca se afla sau nu langa un alt cautator
@@ -109,11 +115,11 @@ void CautatorTip3::mutare(Harta& h) {
 					int nrPos = 0;
 
 					//daca pozitia exista si este accesibila ma uit la vecii ei
-					if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] != '-' || h.M[i][j] != 'X')) {
+					if (h.apartine(i, j) && (h.M[i][j] != '-' || h.M[i][j] != 'X')) {
 						for (int i1 = i - 1; i1 <= i + 1; i1++) {
 							for (int j1 = j - 1; j1 <= j + 1; j1++) {
 								//daca pozitia exista
-								if (i1 >= 0 && i1 < h.nrLin && j1 >= 0 && j1 < h.nrCol) {
+								if (h.apartine(i1, j1)) {
 									//verific daca este accesibila
 									if (h.M[i1][j1] == '-' || h.M[i1][j1] == 'X')
 										nrPos++;

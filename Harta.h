@@ -14,6 +14,7 @@ public:
 	int getNrCasuteNeexplorate() const;					//obtinere nr de casute neexplorate
 	void cresteNrCasuteExplorate();						//cresc nr de casute explorate cu 1
 	void marchezVizitat(const int, const int);			//marchez pozitia ca fiind vizitata
+	bool apartine(const int, const int) const;			//verific daca o pozitie apartine hartii
 	friend ostream& operator <<(ostream&, Harta&);		//operator << supraincarcat
 
 	friend class CautatorTip1;

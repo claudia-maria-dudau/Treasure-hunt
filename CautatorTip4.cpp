@@ -32,8 +32,11 @@ void CautatorTip4::mutare(Harta& h) {
 	}
 
 	else {
-		vector<Pozitie> pozOpt;			//vector ce retine pozitia/pozitiile optime pe care se poate deplasa cautatorul
-		int pozPos = 0;					//numarul de pozitii accesibile pentru pozitia/pozitiile din vector
+		//vector ce retine pozitia/pozitiile optime pe care se poate deplasa cautatorul
+		vector<Pozitie> pozOpt;		
+
+		//numarul de pozitii accesibile pentru pozitia/pozitiile din vector
+		int pozPos = 0;					
 
 		//pentru fiecare pozitie aceesibila jucatorului 
 		//numar cate pozitii poate aceesa fiecare pozitie accesibila acesteia
@@ -42,16 +45,16 @@ void CautatorTip4::mutare(Harta& h) {
 				int nrPos = 0;
 
 				//daca exista pozitia in matrice si este accesibila
-				if (i >= 0 && i < h.nrLin && j >= 0 && j < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+				if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 					for (int i1 = i - 1; i1 <= i + 1; i1++) {
 						for (int j1 = j - 1; j1 <= j + 1; j1++) {
 							//daca exista pozitia in matrice si este accesibila
-							if (i1 >= 0 && i1 < h.nrLin && j1 >= 0 && j1 < h.nrCol && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
+							if (h.apartine(i1, j1) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 								if (i1 == i - 1 && j1 == j - 1) {	//diagonala stanga sus
 									for (int i2 = i1 - 1; i2 <= i1; i2++) {
 										for (int j2 = j1 - 1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
-											if (i2 >= 0 && j2 >= 0 && j2 < h.nrCol) {
+											if (h.apartine(i2, j2)) {
 												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
@@ -69,7 +72,7 @@ void CautatorTip4::mutare(Harta& h) {
 									for (int i2 = i1 - 1; i2 <= i1 + 1; i2++) {
 										for (int j2 = j1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
-											if (i2 >= 0 && i2 < h.nrLin && j2 < h.nrCol) {
+											if (h.apartine(i2, j2)) {
 												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
@@ -87,7 +90,7 @@ void CautatorTip4::mutare(Harta& h) {
 									for (int i2 = i1; i2 <= i1 + 1; i2++) {
 										for (int j2 = j1 - 1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
-											if (i2 < h.nrLin && j2 >= 0 && j2 < h.nrCol) {
+											if (h.apartine(i2, j2)) {
 												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
@@ -105,7 +108,7 @@ void CautatorTip4::mutare(Harta& h) {
 									for (int i2 = i1 - 1; i2 <= i1 + 1; i2++) {
 										for (int j2 = j1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
-											if (i2 >= 0 && i2 < h.nrLin && j2 < h.nrCol) {
+											if (h.apartine(i2, j2)) {
 												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
