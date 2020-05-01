@@ -33,7 +33,8 @@ void Joc::runda() {
 		cout << "Runda " << idRunda << " :" << endl;
 
 		for (int i = 0; i < this->cautatori.size(); i++) {
-			//retin pozitia curenta (care v-a deveni anterioara odata ce cautatorul se muta)
+			//retin pozitia curenta 
+			//(care v-a deveni anterioara odata ce cautatorul se muta)
 			Pozitie pAnt = cautatori[i]->getPoz();
 			h->marchezVizitat(pAnt.getLinie(), pAnt.getColoana());
 
@@ -56,8 +57,9 @@ void Joc::runda() {
 					if (pAct == comori[j]->getPoz()) {
 						set<string> comp = comori[j]->getCompatibil();
 
-						//verific daca cautatorul este compatibil cu comoara gasita
-						//in caz afirmatic marchez comoara ca gasita si scot cautatorul de pe harta
+						//verific daca cautatorul este compatibil cu 
+						//comoara gasita, caz in care marchez comoara 
+						//ca gasita si scot cautatorul de pe harta
 						if (comp.find(idCaut.substr(2, 4)) != comp.end()) {
 							comori[j]->gasitComoara(numeCaut);
 							comori.erase(comori.begin() + j);
@@ -66,7 +68,8 @@ void Joc::runda() {
 							break;
 						}
 
-						//daca cautatorul nu este compatibil cu comoara repozitionez comoara pe harta
+						//daca cautatorul nu este compatibil cu comoara,
+						//repozitionez comoara pe harta
 						else {
 							cout << numeCaut + " a gasit o comoara cu care nu este compatibil. Uneori pierzi alteori nu castigi" << endl;
 							comori[j]->repozitionare(*h);
@@ -75,15 +78,17 @@ void Joc::runda() {
 				}
 			}
 
-			//daca a ramas pe aceeasi pozitie inseamna ca s-a blocat si deci nu mai poate participa la joc
+			//daca a ramas pe aceeasi pozitie inseamna ca 
+			//s-a blocat si deci nu mai poate participa la joc
 			else {
 				cout << numeCaut + " s-a blocat :( Better luck next time pal" << endl;
 				cautatori[i]->setStadiu("Blocat in runda " + to_string(idRunda));
 				ok = 1;
 			}
 
-			//daca cautatorul s-a blocat/ a gasit o comoara cu care este compatibil
-			//atunci il scot din vecotrul de cautatori si il adaug in vectorul pentru clasament
+			//daca cautatorul s-a blocat/ a gasit o comoara 
+			//cu care este compatibil, atunci il scot din vecotrul 
+			//de cautatori si il adaug in vectorul pentru clasament
 			if (ok) {
 				adaugClasament(cautatori[i]);
 				cautatori.erase(cautatori.begin() + i);
@@ -104,7 +109,7 @@ void Joc::runda() {
 }
 
 
-void Joc::afisare() {
+void Joc::afisare() const {
 	cout << endl << (*h) << endl;
 	cout << "Nr de cautatori ce se afla pe harta: " << this->cautatori.size() << endl;
 	cout << "Nr de comori negasite: " << this->comori.size() << endl;
@@ -112,7 +117,7 @@ void Joc::afisare() {
 	cout << endl;
 }
 
-void Joc::clasament() {
+void Joc::clasament() const {
 	cout << "----- !!! CLASAMENT !!! -----" << endl;
 	cout << "Boss de boss: " + Clasament[0]->getNume() + " - " + Clasament[0]->getStadiu() << endl;
 	cout << "Almost there: " + Clasament[1]->getNume() + " - " + Clasament[1]->getStadiu() << endl;
@@ -127,11 +132,11 @@ void Joc::adaugClasament(Cautator* c) {
 	Clasament.insert(Clasament.begin() + i, c);
 }
 
-bool Joc::terminat() {
+bool Joc::terminat() const {
 	return (cautatori.size() == 0);
 }
 
-void Joc::afisareComoriRamase() {
+void Joc::afisareComoriRamase() const {
 	//daca mai exista comori pe tabla afisez pozitia lor
 	if (this->comori.size()) {
 		cout << endl;

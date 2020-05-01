@@ -9,8 +9,10 @@ CautatorTip4::CautatorTip4(Harta& h) {
 }
 
 void CautatorTip4::mutare(Harta& h) {
-	//la fiecare pas se alege pozitia din care se poate ajunge in cele mai multe pozitii
-	//luand in considerare mutarile posibile pentru urmatoarele doua runde
+	//la fiecare pas se alege pozitia din care 
+	//se poate ajunge in cele mai multe pozitii
+	//luand in considerare mutarile posibile in
+	//urmatoarele doua runde ale jocului
 
 	int lin = this->poz->getLinie(), col = this->poz->getColoana();
 
@@ -19,27 +21,31 @@ void CautatorTip4::mutare(Harta& h) {
 		//se alege random prima mutare a jucatorului
 		int i = rand() % 3;
 		switch (i) {
-		case 0:	//se muta in sus
+		case 0:	//sus
 			this->poz->setPozitie(lin - 1, col);
 			break;
-		case 1:	//se muta pe diagonala in sus si la stanga
+		case 1:	//diagonala in sus si la stanga
 			this->poz->setPozitie(lin - 1, col - 1);
 			break;
-		case 2:	//se muta la stanga
+		case 2:	//stanga
 			this->poz->setPozitie(lin, col - 1);
 			break;
 		}
 	}
 
 	else {
-		//vector ce retine pozitia/pozitiile optime pe care se poate deplasa cautatorul
+		//vector ce retine pozitia/pozitiile optime 
+		//pe care se poate deplasa cautatorul
 		vector<Pozitie> pozOpt;		
 
-		//numarul de pozitii accesibile pentru pozitia/pozitiile din vector
+		//numarul de pozitii accesibile pentru 
+		//pozitia/pozitiile din vector
 		int pozPos = 0;					
 
 		//pentru fiecare pozitie aceesibila jucatorului 
-		//numar cate pozitii poate aceesa fiecare pozitie accesibila acesteia
+		//numar cate pozitii poate aceesa fiecare pozitie 
+		//accesibila acesteia (pozitiile accesibile in cea
+		//de-a treia runda a jocului)
 		for (int i = lin - 1; i <= lin + 1; i++) {
 			for (int j = col - 1; j <= col + 1; j++) {
 				int nrPos = 0;
@@ -55,12 +61,15 @@ void CautatorTip4::mutare(Harta& h) {
 										for (int j2 = j1 - 1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
 											if (h.apartine(i2, j2)) {
-												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
+												//daca pozitia este nvizitata
+												//o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
 
-												//daca pe pozitia data se afla un cautator scad 2 din numarul de pozitii posibile
-												//(pozitiile pe care le poate bloca cautatorul respectiv in urmatoarele 2 runde)
+												//daca pe pozitia data se afla un cautator 
+												//scad 2 din numarul de pozitii posibile
+												//(pozitiile pe care le poate bloca cautatorul 
+												//respectiv in urmatoarele 2 runde)
 												else if (h.M[i2][j2] != '|')
 													nrPos -= 2;
 											}
@@ -73,12 +82,15 @@ void CautatorTip4::mutare(Harta& h) {
 										for (int j2 = j1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
 											if (h.apartine(i2, j2)) {
-												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
+												//daca pozitia este nvizitata 
+												//o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
 
-												//daca pe pozitia data se afla un cautator scad 2 din numarul de pozitii posibile
-												//(pozitiile pe care le poate bloca cautatorul respectiv in urmatoarele 2 runde)
+												//daca pe pozitia data se afla un cautator 
+												//scad 2 din numarul de pozitii posibile
+												//(pozitiile pe care le poate bloca cautatorul 
+												//respectiv in urmatoarele 2 runde)
 												else if (h.M[i2][j2] != '|')
 													nrPos -= 2;
 											}
@@ -91,12 +103,15 @@ void CautatorTip4::mutare(Harta& h) {
 										for (int j2 = j1 - 1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
 											if (h.apartine(i2, j2)) {
-												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
+												//daca pozitia este nvizitata 
+												//o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
 
-												//daca pe pozitia data se afla un cautator scad 2 din numarul de pozitii posibile
-												//(pozitiile pe care le poate bloca cautatorul respectiv in urmatoarele 2 runde)
+												//daca pe pozitia data se afla un cautator 
+												//scad 2 din numarul de pozitii posibile
+												//(pozitiile pe care le poate bloca cautatorul 
+												//respectiv in urmatoarele 2 runde)
 												else if (h.M[i2][j2] != '|')
 													nrPos -= 2;
 											}
@@ -109,12 +124,15 @@ void CautatorTip4::mutare(Harta& h) {
 										for (int j2 = j1; j2 <= j1 + 1; j2++) {
 											//daca exista pozitia
 											if (h.apartine(i2, j2)) {
-												//daca pozitia este nvizitata o adaug la numarul de pozitii posibile
+												//daca pozitia este nvizitata 
+												//o adaug la numarul de pozitii posibile
 												if (h.M[i2][j2] == '-' || h.M[i2][j2] == 'X')
 													nrPos++;
 
-												//daca pe pozitia data se afla un cautator scad 2 din numarul de pozitii posibile
-												//(pozitiile pe care le poate bloca cautatorul respectiv in urmatoarele 2 runde)
+												//daca pe pozitia data se afla un cautator 
+												//scad 2 din numarul de pozitii posibile
+												//(pozitiile pe care le poate bloca cautatorul 
+												//respectiv in urmatoarele 2 runde)
 												else if (h.M[i2][j2] != '|')
 													nrPos -= 2;
 											}
@@ -131,8 +149,9 @@ void CautatorTip4::mutare(Harta& h) {
 						pozPos = nrPos;
 					}
 
-					//daca numarul de pozitii accesibile din pozitia curenta este > decat
-					//cel accesibile din pozitia/pozitiile din vector
+					//daca numarul de pozitii accesibile din pozitia 
+					//curenta este mmai mare decat cele accesibile 
+					//din pozitia/pozitiile din vector
 					//golesc vctorul si adaug pozitia
 					else if (nrPos > pozPos) {
 						pozOpt.clear();
@@ -140,16 +159,17 @@ void CautatorTip4::mutare(Harta& h) {
 						pozPos = nrPos;
 					}
 
-					//daca numarul de pozitii accesibile din pozitia curenta este = cu
-					//numarul de pozitii accesibile din vector
-					//adaug pozitia curenta la vector
+					//daca numarul de pozitii accesibile din pozitia 
+					//curenta este egala cu numarul de pozitii accesibile 
+					//din vector, adaug pozitia curenta la vector
 					else if (nrPos == pozPos)
 						pozOpt.push_back(Pozitie(i, j));
 				}
 			}
 		}
 
-		//daca exist mai multe pozitii cu acelasi numar de pozitii accesibile
+		//daca exist mai multe pozitii cu acelasi 
+		//numar de pozitii accesibile
 		//se alege random una dintre ele
 		if (pozOpt.size() > 1) {
 			delete this->poz;
@@ -157,7 +177,8 @@ void CautatorTip4::mutare(Harta& h) {
 			this->poz = new Pozitie(pozOpt[rand() % pozOpt.size()]);
 		}
 
-		//daca am o singura pozitie in vector, pe acesta se va duce cautatorul
+		//daca am o singura pozitie in vector, 
+		//pe acesta se va duce cautatorul
 		else if (pozOpt.size() == 1) {
 			delete this->poz;
 			this->poz = new Pozitie(pozOpt[0]);

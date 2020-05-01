@@ -11,13 +11,16 @@
 #include "ComoaraTip3.h"
 #include <exception>
 
-class exceptieJoc : public exception {	//clasa pt exceptie ce apare atunci cand nu se mai poate genera o runda
+//clasa pt exceptie ce apare atunci cand nu se mai poate genera o runda
+class exceptieJoc : public exception {	
 public:
-	const char* what() const noexcept { return "Nu se mai poate genera o runda deoarece jocul s-a terminat\n"; }
+	const char* what() const noexcept { 
+		return "Nu se mai poate genera o runda deoarece jocul s-a terminat\n";
+	}
 };
 
 
-class Joc {								//clasa pentru gestionarea jocului
+class Joc {		//clasa pentru gestionarea jocului
 	Harta *h;
 	static int idRunda;
 	vector<Cautator*> cautatori;
@@ -28,10 +31,10 @@ public:
 	Joc(const int, const int);			//constructor
 	~Joc();								//destructor
 	void runda();						//simulare runda
-	void afisare();						//afisare harta dupa runda
-	void clasament();					//afisare clasament final
+	void afisare() const;				//afisare harta dupa runda
+	void clasament() const;				//afisare clasament final
 	void adaugClasament(Cautator*);		//adaugare in vectorul Clasament
-	bool terminat();					//verificare daca s-a terminat jocul sau a fost oprit
-	void afisareComoriRamase();			//afisez comorileramase pe tabla
+	bool terminat() const;				//verificare daca s-a terminat jocul sau a fost oprit
+	void afisareComoriRamase() const;	//afisez comorileramase pe tabla
 };
 

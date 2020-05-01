@@ -15,10 +15,16 @@ CautatorTip2::~CautatorTip2() {
 }
 
 void CautatorTip2::mutare(Harta& h) {
-	//scopul lui este sa se indeparteze cat mai mult de pozitia anterioara
+	//scopul lui este sa se indeparteze cat 
+	//mai mult de pozitia anterioara
+	//(i.e pentru fiecare pozitie va calcula distanta 
+	//fata de pozitia anterioara si va alege pozitia
+	//cu distanta cea mai mare care este si disponibila
 	
-	int lin = this->poz->getLinie(), col = this->poz->getColoana();
-	int linAnt = this->pozAnt->getLinie(), colAnt = this->pozAnt->getColoana();
+	int lin = this->poz->getLinie();
+	int col = this->poz->getColoana();
+	int linAnt = this->pozAnt->getLinie();
+	int colAnt = this->pozAnt->getColoana();
 
 	//pozitia anterioara ia valoarea pozitiei curente
 	delete this->pozAnt;
@@ -26,17 +32,22 @@ void CautatorTip2::mutare(Harta& h) {
 
 	//daca se afla pe o pozitie diferita fata de cea anterioara
 	if (lin != linAnt || col != colAnt) {
-		//vector in care retin pozitia/pozitiile cele mai indepartate de pozitia anterioara
+		//vector in care retin pozitia/pozitiile 
+		//cele mai indepartate de pozitia anterioara
 		vector<Pozitie> pozOpt;		
 
-		//distanta pozitiei/pozitiilor cele mai indepartate fata de pozitia anterioara
+		//distanta pozitiei/pozitiilor cele mai 
+		//indepartate fata de pozitia anterioara
 		double dist;				
 
-		//calculez distanta dintre pozitia anterioara si pozitiile posibile pe care cautatorul se poate deplasa
-		//si retin pozitia/pozitiile ce au distanta maxima fata de cea anterioara
+		//calculez distanta dintre pozitia anterioara si 
+		//pozitiile posibile pe care cautatorul se poate deplasa
+		//si retin pozitia/pozitiile ce au distanta maxima 
+		//fata de cea anterioara
 		for (int i = lin - 1; i <= lin + 1; i++) {
 			for (int j = col - 1; j <= col + 1; j++) {
-				//verific daca pozitia exista in matrice si este accesibila cautatorului
+				//verific daca pozitia exista in matrice si 
+				//este accesibila cautatorului
 				if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 					double d = sqrt(pow((linAnt - i), 2) + pow((colAnt - j), 2));
 
@@ -46,7 +57,8 @@ void CautatorTip2::mutare(Harta& h) {
 						dist = d;
 					}
 
-					//verific daca distanta pozitiei actuale este mai mare decat distanta pozitiilor din vector
+					//verific daca distanta pozitiei actuale este 
+					//mai mare decat distanta pozitiilor din vector
 					//caz in care golesc vectorul si adaug noua pozitie
 					else if (d > dist) {
 						pozOpt.clear();
@@ -54,7 +66,8 @@ void CautatorTip2::mutare(Harta& h) {
 						dist = d;
 					}
 
-					//verific daca distanta pozitiei actuale este egala cu distanta pozitiilor din vector
+					//verific daca distanta pozitiei actuale este 
+					//egala cu distanta pozitiilor din vector
 					//caz in care adaug pozitia actuala in vector
 					else if (d == dist)
 						pozOpt.push_back(Pozitie(i, j));
@@ -62,7 +75,8 @@ void CautatorTip2::mutare(Harta& h) {
 			}
 		}
 
-		//daca exist mai multe pozitii ce se afla la distante egale fata de pozitia anteriora
+		//daca exist mai multe pozitii ce se afla la 
+		//distante egale fata de pozitia anteriora
 		//se alege random una dintre ele
 		if (pozOpt.size() > 1) {
 			delete this->poz;
@@ -70,25 +84,26 @@ void CautatorTip2::mutare(Harta& h) {
 			this->poz = new Pozitie(pozOpt[rand() % pozOpt.size()]);
 		}
 
-		//daca am o singura pozitie in vector, pe aceasta se va duce cautatorul
+		//daca am o singura pozitie in vector, 
+		//pe aceasta se va duce cautatorul
 		else if (pozOpt.size() == 1) {
 			delete this->poz;
 			this->poz = new Pozitie(pozOpt[0]);
 		}
 	}
 
-	//daca se afla pe pozitia initiala se alege o pozitia la intamplare pe care sa se mute
+	//daca se afla pe pozitia initiala se alege o 
+	//pozitia la intamplare pe care sa se mute
 	else {
-		//se alege random prima mutare a jucatorului
 		int i = rand() % 3;
 		switch (i) {
-		case 0:	//se muta la stanga
+		case 0:	//stanga
 			this->poz->setPozitie(lin, col - 1);
 			break;
-		case 1:	//se muta pe diagonala in jos si la stanga
+		case 1:	//diagonala in jos si la stanga
 			this->poz->setPozitie(lin + 1, col - 1);
 			break;
-		case 2:	//se muta in jos
+		case 2:	//jos
 			this->poz->setPozitie(lin + 1, col);
 			break;
 		}

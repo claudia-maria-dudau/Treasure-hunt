@@ -14,39 +14,55 @@ CautatorTip1::~CautatorTip1() {
 }
 
 void CautatorTip1::mutare(Harta& h) {
-	//imparte aria sa vizuala in 4 cadrane (cu cate 6 patratele in fiecare)
-	//din cele 4 cadrane nu ia in considerare cadranul in care se afla pozitia sa anterioara
-	//alege sa se mute in cadranul ce are cele mai multe casute neexplorate si
-	//cele mai multe casute in care poate ajunge
+	//imparte aria sa vizuala in 4 cadrane 
+	/*	1 1 1 2 2
+		1 1 1 2 2
+		4 4   2 2
+		4 4 3 3 3
+		4 4 3 3 3   */
+	//din cele 4 cadrane nu ia in considerare cadranul
+	//in care se afla pozitia sa anterioara
+	//alege sa se mute in cadranul ce are cele mai 
+	//multe casute neexplorate si cele mai multe 
+	//casute in care poate ajunge
 
-	int lin = this->poz->getLinie(), col = this->poz->getColoana();
-	int linAnt = this->pozAnt->getLinie(), colAnt = this->pozAnt->getColoana();
+	int lin = this->poz->getLinie();
+	int col = this->poz->getColoana();
+	int linAnt = this->pozAnt->getLinie();
+	int colAnt = this->pozAnt->getColoana();
 
 	//pozitia anterioara ia valoarea pozitiei curente
 	delete this->pozAnt;
 	this->pozAnt = new Pozitie(*poz);
 
-	//verific ca cautatorul sa nu se afla pe aceeasi pozitie ca cea anterioara
+	//verific ca cautatorul sa nu se afla pe aceeasi
+	//pozitie ca cea anterioara
 	if (lin != linAnt || col != colAnt) {
-		//pentru fiecare cadran, cu exceptia celui in care se afla pozitia anterioara a cautatorului,
+		//pentru fiecare cadran, cu exceptia celui 
+		//in care se afla pozitia anterioara a cautatorului,
 		//calculez numarul de casute neexplorate 
 
-		//vector ce retine cadranul/cadranele cu numarul min de casute neexplorate
+		//vector ce retine cadranul/cadranele cu 
+		//numarul min de casute neexplorate
 		vector<int> cadraneOpt;		
 
-		//numarul de casute neexplorate corespunzatoare cadaranului/cadranelor din vector
+		//numarul de casute neexplorate corespunzatoare
+		//cadaranului/cadranelor din vector
 		int neexp = 0;				
 
-		//numarul casutelor posibile pe care se poate deplasa cautatorul in cadarnul/cadranele din vector
+		//numarul casutelor posibile pe care se poate 
+		//deplasa cautatorul in cadarnul/cadranele din vector
 		int posibil = 0;			
 
 		//cadran 1
-		//verific ca pozitia anterioara sa nu se alfe in cadranul 1
+		//verific ca pozitia anterioara sa nu se 
+		//alfe in cadranul 1
 		if (linAnt > lin - 1 || colAnt > col) {
 			int nrNeexp = 0, nrPosib = 0;
 			for (int i = lin - 2; i <= lin - 1; i++) {
 				for (int j = col - 2; j <= col; j++) {
-					//verific ca pozitia sa existe in matrice si sa fie neexplorata
+					//verific ca pozitia sa existe in matrice
+					//si sa fie neexplorata
 					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
@@ -58,7 +74,8 @@ void CautatorTip1::mutare(Harta& h) {
 			}
 
 			if (nrNeexp != 0) {
-				//intrucat ne aflam in primul cadran, vectorul este gol, deci adaugam direct cadranul in vector
+				//intrucat ne aflam in primul cadran, 
+				//vectorul este gol, deci adaugam direct cadranul
 				cadraneOpt.push_back(1);
 				neexp = nrNeexp;
 				posibil = nrPosib;
@@ -66,12 +83,14 @@ void CautatorTip1::mutare(Harta& h) {
 		}
 
 		//cadranul 2
-		//verific ca pozitia naterioara sa nu se alfe in cadranul 2
+		//verific ca pozitia naterioara sa nu se alfe 
+		//in cadranul 2
 		if (linAnt > lin || colAnt < col + 1) {
 			int nrNeexp = 0, nrPosib = 0;
 			for (int i = lin - 2; i <= lin; i++) {
 				for (int j = col + 1; j <= col + 2; j++) {
-					//verific ca pozitia sa existe in matrice si sa fie neexplorata
+					//verific ca pozitia sa existe in matrice si 
+					//sa fie neexplorata
 					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
@@ -99,9 +118,11 @@ void CautatorTip1::mutare(Harta& h) {
 					posibil = nrPosib;
 				}
 
-				//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
+				//verific daca numarul de casute neexplorate
+				//din cadran este = cu cel al cadranelor din vector
 				else if (nrNeexp = neexp) {
-					//daca in cadranul curent se poate ajunge in mai multe casute decat din cadranele din vector
+					//daca in cadranul curent se poate ajunge 
+					//in mai multe casute decat din cadranele din vector
 					//golesc vectorul si adug cadranul curent
 					if (nrPosib > posibil) {
 						cadraneOpt.clear();
@@ -110,8 +131,9 @@ void CautatorTip1::mutare(Harta& h) {
 						posibil = nrPosib;
 					}
 
-					//daca, atat din cadranul curent cat si din cele din vector, 
-					//se poate ajunge in acelasi numar de casute, adaug cadarnul la vector
+					//daca, atat din cadranul curent cat si din 
+					//cele din vector, se poate ajunge in acelasi 
+					//numar de casute, adaug cadarnul la vector
 					if (posibil == nrPosib)
 						cadraneOpt.push_back(2);
 				}
@@ -119,12 +141,14 @@ void CautatorTip1::mutare(Harta& h) {
 		}
 
 		//cadranul 3
-		//verific ca pozitia naterioara sa nu se alfe in cadranul 3
+		//verific ca pozitia naterioara sa nu se alfe 
+		//in cadranul 3
 		if (linAnt < lin + 1 || colAnt < col) {
 			int nrNeexp = 0, nrPosib = 0;
 			for (int i = lin + 1; i <= lin + 2; i++) {
 				for (int j = col; j <= col + 2; j++) {
-					//verific ca pozitia sa existe in matrice si sa fie neexplorata
+					//verific ca pozitia sa existe in matrice si 
+					//sa fie neexplorata
 					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
@@ -143,7 +167,8 @@ void CautatorTip1::mutare(Harta& h) {
 					posibil = nrPosib;
 				}
 
-				//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
+				//daca numarul de casute neexplorate din cadarn 
+				//este > decat cel al cadranelor din vector, 
 				//golesc vectorul si adaug cadranul
 				else if (nrNeexp > neexp) {
 					cadraneOpt.clear();
@@ -152,10 +177,11 @@ void CautatorTip1::mutare(Harta& h) {
 					posibil = nrPosib;
 				}
 
-				//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
+				//verific daca numarul de casute neexplorate 
+				//din cadran este = cu cel al cadranelor din vector
 				else if (nrNeexp = neexp) {
-					//daca in cadranul curent se poate ajunge in mai multe casute 
-					//decat din cadranul/cadranele din vector
+					//daca in cadranul curent se poate ajunge in
+					//mai multe casute decat din cadranul/cadranele din vector
 					//atunci golesc vectorul si adaug cadranul
 					if (nrPosib > posibil) {
 						cadraneOpt.clear();
@@ -164,8 +190,9 @@ void CautatorTip1::mutare(Harta& h) {
 						posibil = nrPosib;
 					}
 
-					//daca, atat din cadranul curent cat si din cele din vector, 
-					//se poate ajunge in acelasi numar de causte, adaug cadarnul la vector
+					//daca, atat din cadranul curent cat si din cele 
+					//din vector, se poate ajunge in acelasi numar de 
+					//causte, adaug cadarnul la vector
 					if (posibil == nrPosib)
 						cadraneOpt.push_back(3);
 				}
@@ -173,12 +200,14 @@ void CautatorTip1::mutare(Harta& h) {
 		}
 
 		//cadranul 4
-		//verific ca pozitia naterioara sa nu se alfe in cadranul 4
+		//verific ca pozitia naterioara sa nu se alfe 
+		//in cadranul 4
 		if (linAnt < lin || colAnt > col - 1) {
 			int nrNeexp = 0, nrPosib = 0;
 			for (int i = lin; i <= lin + 2; i++) {
 				for (int j = col - 2; j <= col - 1; j++) {
-					//verific ca pozitia sa existe in matrice si sa fie neexplorata
+					//verific ca pozitia sa existe in matrice si 
+					//sa fie neexplorata
 					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						nrNeexp++;
 
@@ -197,7 +226,8 @@ void CautatorTip1::mutare(Harta& h) {
 					posibil = nrPosib;
 				}
 
-				//daca numarul de casute neexplorate din cadarn este > decat cel al cadranelor din vector, 
+				//daca numarul de casute neexplorate din cadarn 
+				//este > decat cel al cadranelor din vector, 
 				//golesc vectorul si adaug cadranul
 				else if (nrNeexp > neexp) {
 					cadraneOpt.clear();
@@ -206,11 +236,12 @@ void CautatorTip1::mutare(Harta& h) {
 					posibil = nrPosib;
 				}
 
-				//verific daca numarul de casute neexplorate din cadran este = cu cel al cadranelor din vector
+				//verific daca numarul de casute neexplorate din cadran 
+				//este = cu cel al cadranelor din vector
 				else if (nrNeexp = neexp) {
-					//daca in cadranul curent se poate ajunge in mai multe casute
-					//decat din cadranul/cadranele din vector
-					//atunci golesc vectorul si adaug cadranul
+					//daca in cadranul curent se poate ajunge in 
+					//mai multe casute decat din cadranul/cadranele
+					//din vector, atunci golesc vectorul si adaug cadranul
 					if (nrPosib > posibil) {
 						cadraneOpt.clear();
 						cadraneOpt.push_back(4);
@@ -218,8 +249,9 @@ void CautatorTip1::mutare(Harta& h) {
 						posibil = nrPosib;
 					}
 
-					//daca, atat din cadranul curent cat si din cele din vector, 
-					//se poate ajunge in acelasi numar de casute, adaug cadarnul la vector
+					//daca, atat din cadranul curent cat si din 
+					//cele din vector, se poate ajunge in acelasi 
+					//numar de casute, adaug cadarnul la vector
 					if (posibil == nrPosib)
 						cadraneOpt.push_back(4);
 				}
@@ -229,24 +261,28 @@ void CautatorTip1::mutare(Harta& h) {
 		if (cadraneOpt.size() > 0) {
 			int cadran, posDep;
 
-			//daca exista mai multe cadrane optime se alege la intamplare unul dintre acestea
+			//daca exista mai multe cadrane optime 
+			//se alege la intamplare unul dintre acestea
 			if (cadraneOpt.size() > 1) {
 				srand(time(NULL));
 				cadran = cadraneOpt[rand() % cadraneOpt.size()];
 			}
 
-			//daca exista un singur cadran se alege acesta
+			//daca exista un singur cadran 
+			//se alege acesta
 			else
 				cadran = cadraneOpt[0];
 
-			//daca exista mai multe posibilitati de deplasare, se alege la intampalare una dintre acestea
+			//daca exista mai multe posibilitati de deplasare,
+			//se alege la intampalare una dintre acestea
 			int ok = 0;
 			if (posibil == 2) {
 				posDep = rand() % 2 + 1;
 				ok = 1;
 			}
 
-			//in functie de cadranul ales se alege pozitia pe care va inainta cautatorul
+			//in functie de cadranul ales se alege 
+			//pozitia pe care va inainta cautatorul
 			switch (cadran) {
 			case 1:	//cadranul 1
 				if (ok) {
@@ -308,19 +344,18 @@ void CautatorTip1::mutare(Harta& h) {
 		}
 	}
 
-	//daca se afla la inceputul jocului se alege random o mutare de start
+	//daca se afla la inceputul jocului se alege 
+	//random o mutare de start
 	else {
-		//se alege random prima mutare a jucatorului
-
 		int i = rand() % 3;
 		switch (i) {
-		case 0:	//se muta la dreapta
+		case 0:	//dreapta
 			this->poz->setPozitie(lin, col + 1);
 			break;
-		case 1:	//se muta pe diagonala in jos si la dreapta
+		case 1:	//diagonala in jos si la dreapta
 			this->poz->setPozitie(lin + 1, col + 1);
 			break;
-		case 2:	//se muta in jos
+		case 2:	//jos
 			this->poz->setPozitie(lin + 1, col);
 			break;
 		}

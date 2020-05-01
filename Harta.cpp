@@ -33,7 +33,7 @@ bool Harta::apartine(const int lin, const int col) const {
 	return (lin >= 0 && lin < nrLin && col >= 0 && col < nrCol);
 }
 
-ostream& operator <<(ostream& out, Harta& h) {
+ostream& operator <<(ostream& out, const Harta& h) {
 	for (int i = 0; i < h.nrLin; i++) {
 		for (int j = 0; j < h.nrCol; j++)
 			out << h.M[i][j] << " ";

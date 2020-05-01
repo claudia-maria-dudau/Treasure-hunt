@@ -9,7 +9,8 @@ CautatorTip3::CautatorTip3(Harta& h) {
 }
 
 void CautatorTip3::mutare(Harta& h) {
-	//se duce cat mai departe posibil de restul cautatorilor si evita sa se intersecteze cu acestia
+	//se duce cat mai departe posibil de restul cautatorilor 
+	//si evita sa se intersecteze cu acestia
 
 	int lin = this->poz->getLinie(), col = this->poz->getColoana();
 
@@ -18,13 +19,13 @@ void CautatorTip3::mutare(Harta& h) {
 		//se alege random prima mutare a jucatorului
 		int i = rand() % 3;
 		switch (i) {
-		case 0:	//se muta in sus
+		case 0:	//sus
 			this->poz->setPozitie(lin - 1, col);
 			break;
-		case 1:	//se muta pe diagonala in sus si la dreapta
+		case 1:	//diagonala in sus si la dreapta
 			this->poz->setPozitie(lin - 1, col + 1);
 			break;
-		case 2:	//se muta la dreapta
+		case 2:	//dreapta
 			this->poz->setPozitie(lin, col + 1);
 			break;
 		}
@@ -33,10 +34,11 @@ void CautatorTip3::mutare(Harta& h) {
 	else {
 		Pozitie pozCaut = Pozitie(0, 0);
 
-		//verific daca langa el se afla un cautator
+		//verific daca in aria sa vizuala se afla vreun cautator
 		for (int i = lin - 1; i <= lin + 1; i++) {
 			for (int j = col - 1; j <= col + 1; j++) {
-				//daca pozitia exista si pe aceasta se afla un cautator
+				//daca pozitia exista si pe aceasta 
+				//se afla un cautator
 				if (h.apartine(i, j)) {
 					if (h.M[i][j] != '-' || h.M[i][j] != '|' || h.M[i][j] != 'X' || h.M[i][j] != 'B') {
 						pozCaut = Pozitie(i, j);
@@ -47,17 +49,22 @@ void CautatorTip3::mutare(Harta& h) {
 		}
 
 		if (pozCaut != Pozitie(0, 0)) {
-			//vector in care retin pozitia/pozitiile cele mai indepartate de cautator
+			//vector in care retin pozitia/pozitiile
+			//cele mai indepartate de cautator
 			vector<Pozitie> pozOpt;	
 
-			//distanta pozitiei/pozitiilor cele mai indepartate fata de cautator
+			//distanta pozitiei/pozitiilor cele mai 
+			//indepartate fata de cautator
 			double dist;				
 
-			//calculez distanta dintre pozitia cautatorului si pozitiile posibile pe care se poate deplasa
-			//si retin pozitia/pozitiile ce au distanta maxima fata de cea a cautatorului
+			//calculez distanta dintre pozitia cautatorului 
+			//si pozitiile posibile pe care se poate deplasa
+			//si retin pozitia/pozitiile ce au distanta maxima 
+			//fata de pozitia cautatorului de pe harta
 			for (int i = lin - 1; i <= lin + 1; i++) {
 				for (int j = col - 1; j <= col + 1; j++) {
-					//verific daca pozitia exista in matrice si este accesibila cautatorului curent
+					//verific daca pozitia exista in matrice 
+					//si este accesibila cautatorului curent
 					if (h.apartine(i, j) && (h.M[i][j] == '-' || h.M[i][j] == 'X')) {
 						double d = sqrt(pow((pozCaut.getLinie() - i), 2) + pow((pozCaut.getColoana() - j), 2));
 
@@ -67,16 +74,18 @@ void CautatorTip3::mutare(Harta& h) {
 							dist = d;
 						}
 
-						//verific daca distanta pozitiei actuale este > decat 
-						//distanta pozitiei/pozitiilor din vector fata de cautator
-						//caz in care golesc vectorul si adaug noua pozitie
+						//verific daca distanta pozitiei actuale este 
+						//mai mare decat distanta pozitiei/pozitiilor 
+						//din vector caz in care golesc vectorul 
+						//si adaug noua pozitie
 						else if (d > dist) {
 							pozOpt.clear();
 							pozOpt.push_back(Pozitie(i, j));
 							dist = d;
 						}
 
-						//verific daca distanta pozitiei actuale este = cu distanta pozitiei/pozitiilor din vector
+						//verific daca distanta pozitiei actuale este
+						//egala cu distanta pozitiei/pozitiilor din vector
 						//caz in care adaug pozitia actuala in vector
 						else if (d == dist)
 							pozOpt.push_back(Pozitie(i, j));
@@ -84,7 +93,8 @@ void CautatorTip3::mutare(Harta& h) {
 				}
 			}
 
-			//daca exist mai multe pozitii ce se afla la distante maxime egale fata de cautator
+			//daca exist mai multe pozitii ce se afla
+			//la distante maxime egale fata de cautator
 			//se alege random una dintre ele
 			if (pozOpt.size() > 1) {
 				delete this->poz;
@@ -92,29 +102,36 @@ void CautatorTip3::mutare(Harta& h) {
 				this->poz = new Pozitie(pozOpt[rand() % pozOpt.size()]);
 			}
 
-			//daca am o singura pozitie in vector, pe aceasta se va duce cautatorul
+			//daca am o singura pozitie in vector, 
+			//pe aceasta se va duce cautatorul
 			else if (pozOpt.size() == 1) {
 				delete this->poz;
 				this->poz = new Pozitie(pozOpt[0]);
 			}
 		}
 
-		//daca nu se afla langa un cautator determin pozitia optima pe care se poate deplasa
-		//(pozitia cu cele mai multe posibilitati de continuare si care nu se afla langa un alt cautator)
+		//daca nu se afla langa un cautator determin 
+		//pozitia optima pe care se poate deplasa
+		//(pozitia cu cele mai multe posibilitati de continuare 
+		//si care nu se afla langa un alt cautator)
 		else {
-			//vector ce retine pozitia/pozitiile optime pe care se poate deplasa cautatorul
+			//vector ce retine pozitia/pozitiile optime 
+			//pe care se poate deplasa cautatorul
 			vector<Pozitie> pozOpt;	
 
-			//numarul de pozitii accesibile pentru pozitia/pozitiile din vector
+			//numarul de pozitii accesibile pentru 
+			//pozitia/pozitiile din vector
 			int pozPos = 0;					
 
-			//pentru fiecare pozitie accesibila cautatorului numar la cate pozitii are acces si
-			//daca se afla sau nu langa un alt cautator
+			//pentru fiecare pozitie accesibila cautatorului 
+			//numar la cate pozitii are acces si daca se afla 
+			//sau nu langa un alt cautator
 			for (int i = lin - 1; i <= lin + 1; i++) {
 				for (int j = col - 1; j <= col + 1; j++) {
 					int nrPos = 0;
 
-					//daca pozitia exista si este accesibila ma uit la vecii ei
+					//daca pozitia exista si este accesibila
+					//ma uit la veciniii ei
 					if (h.apartine(i, j) && (h.M[i][j] != '-' || h.M[i][j] != 'X')) {
 						for (int i1 = i - 1; i1 <= i + 1; i1++) {
 							for (int j1 = j - 1; j1 <= j + 1; j1++) {
@@ -139,32 +156,34 @@ void CautatorTip3::mutare(Harta& h) {
 							pozPos = nrPos;
 						}
 
-						//daca numarul de pozitii accesibile din pozitia curenta este > decat
-						//cel accesibile din pozitia/pozitiile din vector
-						//golesc vctorul si adaug pozitia
+						//daca numarul de pozitii accesibile din pozitia curenta
+						//este mai mare decat cele accesibile din pozitia/pozitiile 
+						//din vector, golesc vctorul si adaug pozitia
 						else if (nrPos > pozPos) {
 							pozOpt.clear();
 							pozOpt.push_back(Pozitie(i, j));
 							pozPos = nrPos;
 						}
 
-						//daca numarul de pozitii accesibile din pozitia curenta este egal cu
-						//numarul de pozitii accesibile din vector
-						//adaug pozitia curenta la vector
+						//daca numarul de pozitii accesibile din pozitia 
+						//curenta este egal cu numarul de pozitii accesibile
+						//din vector, adaug pozitia curenta la vector
 						else if (nrPos == pozPos)
 							pozOpt.push_back(Pozitie(i, j));
 					}
 				}
 			}
 
-			//daca exist mai multe pozitii la fel de optime se alege random una dintre ele
+			//daca exist mai multe pozitii optime 
+			//se alege random una dintre ele
 			if (pozOpt.size() > 1) {
 				delete this->poz;
 				srand(time(NULL));
 				this->poz = new Pozitie(pozOpt[rand() % pozOpt.size() - 1]);
 			}
 
-			//daca am o singura pozitie in vector, pe acesta se va duce cautatorul
+			//daca am o singura pozitie in vector,
+			//pe acesta se va duce cautatorul
 			else if (pozOpt.size() == 1) {
 				delete this->poz;
 				this->poz = new Pozitie(pozOpt[0]);

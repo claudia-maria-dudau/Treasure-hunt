@@ -7,7 +7,7 @@
 #include <vector>
 using namespace std;
 
-class Cautator {							//clasa abstracta pe care o mostenesc celelate clase de cautatori
+class Cautator {	//clasa abstracta pe care o mostenesc celelate clase de cautatori
 protected:
 	Pozitie* poz;
 	int arieVizibilitate;

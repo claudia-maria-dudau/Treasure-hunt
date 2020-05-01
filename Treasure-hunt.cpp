@@ -3,7 +3,7 @@
 int main() {
 	int nrLin, nrCol;
 
-	//citesc nr de linii si coloane
+	//citesc nr de lini si coloane
 	cout << "Ce dimensiune doresti sa aiba harta?" << endl;
 	cout << "Nr lini (minim 15): ";
 	cin >> nrLin;
@@ -35,7 +35,7 @@ int main() {
 				throw invalid_argument("Operatia introdusa este gresita");
 
 			switch (OP) {
-			case 1:	//Simulare runda cu runda a jocului atat cat doreste utilizatorul
+			case 1:	//Simulare runda cu runda atat cat doreste utilizatorul
 				do {
 					cout << endl;
 

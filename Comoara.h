@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class Comoara {											//clasa abstracta de baza pentru comorile de pe harta
+class Comoara {		//clasa abstracta de baza pentru comorile de pe harta
 protected:
 	Pozitie* poz;
 	static unsigned id;
